@@ -1,0 +1,88 @@
+[
+  {
+    "category": "テーブル・机",
+    "items": [
+      {
+        "name": "ローテーブル",
+        "size": [80, 60, 40],
+        "fileName": "lowTable",
+        "imageSize": [155, 115]
+      },
+      {
+        "name": "昇降デスク",
+        "size": [60, 40, 100],
+        "fileName": "adjustableDesk",
+        "imageSize": [116, 75]
+      },
+      {
+        "name": "こたつテーブル",
+        "size": [120, 80, 40],
+        "fileName": "kotatsuTable",
+        "imageSize": [233, 155]
+      }
+    ]
+  },
+  {
+    "category": "ソファ・椅子",
+    "items": [
+      {
+        "name": "椅子",
+        "size": [50, 30, 50],
+        "fileName": "chair",
+        "imageSize": [96, 57]
+      },
+      {
+        "name": "ゲーミングチェア",
+        "size": [70, 80, 130],
+        "fileName": "gamingChair",
+        "imageSize": [136, 152]
+      },
+      {
+        "name": "ソファー",
+        "size": [110, 60, 70],
+        "fileName": "sofa",
+        "imageSize": [214, 115]
+      }
+    ]
+  },
+  {
+    "category": "収納",
+    "items": [
+      {
+        "name": "タンス",
+        "size": [75, 40, 65],
+        "fileName": "chest",
+        "imageSize": [145, 75]
+      },
+      {
+        "name": "カラーボックス",
+        "size": [40, 30, 88],
+        "fileName": "storageBox",
+        "imageSize": [78, 57]
+      },
+      {
+        "name": "キャビネット",
+        "size": [90, 40, 180],
+        "fileName": "cabinet",
+        "imageSize": [175, 77]
+      },
+      {
+        "name": "テレビ台",
+        "size": [100, 30, 40],
+        "fileName": "TVtable",
+        "imageSize": [195, 57]
+      }
+    ]
+  },
+  {
+    "category": "寝具",
+    "items": [
+      {
+        "name": "ベッド",
+        "size": [100, 210, 80],
+        "fileName": "bed",
+        "imageSize": [194, 406]
+      }
+    ]
+  }
+]
