@@ -1,27 +1,17 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { VStack, HStack, Spacer, Text, WrapItem, Box, Wrap, Link } from '@chakra-ui/layout'
 import RoomInfo from '../components/RoomInfo'
 import roomList from '../Data/roomList.json'
 import IconButton from '../components/IconButton'
 import LogOutButton from '../components/LogOutButton'
 
-interface Props {
-  handleSignOut: () => void
-}
-
 interface room_type {
   name: string
   image: string
 }
 
-function List ({ handleSignOut }: Props): JSX.Element {
-  useEffect(() => {
-    if (localStorage.getItem('displayName') === null || localStorage.getItem('displayName') === '') {
-      window.location.href = '/'
-    }
-  }, [])
-
-  const name = localStorage.getItem('displayName')
+function List (): JSX.Element {
+  const name = 'ここに名前'
   const AllRooms: JSX.Element[] = roomList.map(({ name, image }: room_type, index: number) => {
     return (
       <WrapItem key={index}>
@@ -37,7 +27,7 @@ function List ({ handleSignOut }: Props): JSX.Element {
       <VStack marginTop='10px' justify='center'>
         <HStack paddingRight='20px' w='100%' h='20px'>
           <Spacer/>
-          <LogOutButton handleSignOut={handleSignOut}/>
+          <LogOutButton/>
         </HStack>
         <Text paddingY='30px' width='50%' fontSize='30px' textAlign='center' borderBottom='3px solid #999999'>{name}さんの部屋一覧</Text>
         <HStack width='50%'>
