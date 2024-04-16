@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useInteractJS } from '../hooks/useInteractJS'
+import { useInteractJS } from '../../hooks/useInteractJS'
 
 interface Props {
   fileName: string

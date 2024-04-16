@@ -1,7 +1,7 @@
 import React from 'react'
 import { VStack, Text, Box } from '@chakra-ui/layout'
-import Logo from '../components/Logo'
-import LoginButton from '../components/LoginButton'
+import Logo from '../components/display/Logo'
+import LoginButton from '../components/button/LoginButton'
 
 function Login (): JSX.Element {
   return (

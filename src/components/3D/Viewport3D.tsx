@@ -2,14 +2,14 @@ import React from 'react'
 import { OrbitControls, Environment } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import LoadModels from './LoadModels'
-import type { interiorType } from '../type/InteriorType'
+import type { interiorType } from '../../type/InteriorType'
 
 interface Props {
   interiorsInfo: interiorType[]
 }
 
 function Viewport3D ({ interiorsInfo }: Props): JSX.Element {
-  var nonEmptyInteriorsInfo: interiorType[] = []
+  let nonEmptyInteriorsInfo: interiorType[] = []
   if (interiorsInfo.length !== 0) {
     nonEmptyInteriorsInfo = interiorsInfo.filter(item => item.fileName !== '')
   }

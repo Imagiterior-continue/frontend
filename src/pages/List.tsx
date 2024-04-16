@@ -1,9 +1,9 @@
 import React from 'react'
 import { VStack, HStack, Spacer, Text, WrapItem, Box, Wrap, Link } from '@chakra-ui/layout'
-import RoomInfo from '../components/RoomInfo'
+import RoomInfo from '../components/button/RoomButton'
 import roomList from '../Data/roomList.json'
-import IconButton from '../components/IconButton'
-import LogOutButton from '../components/LogOutButton'
+import IconButton from '../components/button/IconButton'
+import LogOutButton from '../components/button/LogoutButton'
 
 interface room_type {
   name: string
