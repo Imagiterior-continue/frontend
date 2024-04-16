@@ -1,5 +1,5 @@
 import React from 'react'
-import FurnitureInfo from './FurnitureInfo'
+import FurnitureInfo from './display/FurnitureInfo'
 import { AccordionItem, AccordionButton, AccordionIcon, AccordionPanel } from '@chakra-ui/accordion'
 import { Box, WrapItem, VStack } from '@chakra-ui/layout'
 

@@ -1,27 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 import { VStack, HStack, Spacer, Center, Box } from '@chakra-ui/layout'
 import SideBar from '../components/SideBar'
-import BackButton from '../components/BackButton'
-import LogOutButton from '../components/LogOutButton'
+import BackButton from '../components/button/BackButton'
+import LogOutButton from '../components/button/LogoutButton'
 import RoomForm from '../components/RoomForm'
-import IconButton from '../components/IconButton'
-import ShowGuide from '../components/ShowGuide'
-import DraggableImg from '../components/DraggableImg'
+import IconButton from '../components/button/IconButton'
+import Guide from '../components/display/Guide'
+import DraggableImg from '../components/2D/DraggableImg'
 import type { interiorType } from '../type/InteriorType'
-import Viewport3D from '../components/Viewport3D'
+import Viewport3D from '../components/3D/Viewport3D'
 
-interface Props {
-  handleSignOut: () => void
-}
-
-function Design ({ handleSignOut }: Props): JSX.Element {
-  useEffect(() => {
-    if (localStorage.getItem('displayName') === null || localStorage.getItem('displayName') === '') {
-      window.location.href = '/'
-    }
-  }, [])
-
+function Design (): JSX.Element {
   /* 部屋名の取得 */
   const [name, setName] = useState<string>('')
   /* 家具の管理用 */
@@ -77,7 +67,7 @@ function Design ({ handleSignOut }: Props): JSX.Element {
           <Spacer/>
           <IconButton type='save' event={ () => { saveLayout() } }/>
           <Box width='20px'/>
-          <LogOutButton handleSignOut={handleSignOut}/>
+          <LogOutButton/>
         </HStack>
         <HStack width='97%' marginTop='20px'>
           <Spacer/>
@@ -95,7 +85,7 @@ function Design ({ handleSignOut }: Props): JSX.Element {
           <Spacer/>
         </HStack>
         <HStack width='97%'>
-          <ShowGuide/>
+          <Guide/>
         </HStack>
       </VStack>
     </>

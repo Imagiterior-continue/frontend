@@ -1,7 +1,7 @@
 import React from 'react'
 import { Flex, VStack, Center, Accordion, WrapItem } from '@chakra-ui/react'
-import UserInfo from './UserInfo'
-import Logo from './Logo'
+import UserInfo from './display/UserInfo'
+import Logo from './display/Logo'
 import FurnitureMenu from './FurnitureMenu'
 import furnitures from '../Data/furnitures.json'
 

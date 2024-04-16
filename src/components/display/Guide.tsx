@@ -1,14 +1,14 @@
 import React from 'react'
-import { HStack, Text, Spacer } from '@chakra-ui/layout'
+import { VStack, HStack, Text, Spacer } from '@chakra-ui/layout'
 import { BsHandIndex } from 'react-icons/bs'
 import { RiDragMove2Line } from 'react-icons/ri'
 import { LuMousePointerClick } from 'react-icons/lu'
 
-interface Props {
+interface GuideType {
   type: 'choose' | 'drag' | 'click'
 }
 
-function Guide ({ type }: Props): JSX.Element {
+function GuidePart ({ type }: GuideType): JSX.Element {
   return (
     <>
       <HStack width='250px'>
@@ -17,6 +17,21 @@ function Guide ({ type }: Props): JSX.Element {
         <Text width='260px' textAlign='left' fontSize='20px'>{type === 'choose' ? '左の一覧から選択' : type === 'drag' ? 'ドラッグで移動' : 'クリックで回転'}</Text>
         <Spacer/>
       </HStack>
+    </>
+  )
+}
+
+function Guide (): JSX.Element {
+  return (
+    <>
+      <VStack width='760px' height='110px'>
+        <Text width='100%' paddingBottom='7px' paddingLeft='10px' marginBottom='7px' borderBottom='3px solid #EEEEEE' textAlign='left' fontSize='20px'>操作方法</Text>
+        <HStack width='95%' justifyItems='left'>
+          <GuidePart type='choose'/>
+          <GuidePart type='drag'/>
+          <GuidePart type='click'/>
+        </HStack>
+      </VStack>
     </>
   )
 }

@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { VStack, HStack, Text, WrapItem, Box, Wrap } from '@chakra-ui/layout'
 import { useDisclosure } from '@chakra-ui/hooks'
-import RoomInfo from '../components/RoomInfo'
+import RoomInfo from '../components/button/RoomButton'
 import roomList from '../Data/roomList.json'
-import BackButton from '../components/BackButton'
-import DeleteModal from '../components/DeleteModal'
+import BackButton from '../components/button/BackButton'
+import DeleteModal from '../components/modal/DeleteModal'
 
 interface room_type {
   name: string
