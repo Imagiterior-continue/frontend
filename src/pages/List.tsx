@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { VStack, HStack, Spacer, Text, WrapItem, Box, Wrap, Link } from '@chakra-ui/layout'
+import axios from 'axios'
+import { baseURL } from '../Data/baseURL'
 import RoomInfo from '../components/button/RoomButton'
-import roomList from '../Data/roomList.json'
 import IconButton from '../components/button/IconButton'
 import LogOutButton from '../components/button/LogoutButton'
 
@@ -11,7 +12,32 @@ interface room_type {
 }
 
 function List (): JSX.Element {
-  const name = 'ここに名前'
+  const [roomList, setRoomList] = useState<any>([])
+
+  useEffect(() => {
+    // ユーザーIDの取得
+    const query = new URLSearchParams(location.search)
+    const userId = query.get('user_id')
+    if (userId != null) {
+      localStorage.setItem('user_id', userId)
+    }
+
+    // 部屋情報の取得
+    axios
+      .get(
+        baseURL +
+          `user_layout/${localStorage.getItem('user_id')}`
+      )
+      .then((response) => {
+        console.log(response.data)
+        setRoomList(response.data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }, [])
+
+  // TODO:APIで取得したユーザー情報の形式を確認した後、見直したい
   const AllRooms: JSX.Element[] = roomList.map(({ name, image }: room_type, index: number) => {
     return (
       <WrapItem key={index}>
@@ -29,7 +55,7 @@ function List (): JSX.Element {
           <Spacer/>
           <LogOutButton/>
         </HStack>
-        <Text paddingY='30px' width='50%' fontSize='30px' textAlign='center' borderBottom='3px solid #999999'>{name}さんの部屋一覧</Text>
+        <Text paddingY='30px' width='50%' fontSize='30px' textAlign='center' borderBottom='3px solid #999999'>{localStorage.getItem('user_id')}さんの部屋一覧</Text>
         <HStack width='50%'>
           <Spacer/>
           <Link href='/delete' width='50%'>
