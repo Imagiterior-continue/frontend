@@ -9,7 +9,7 @@ function UserInfo (): JSX.Element {
     <>
       <HStack width='220px'>
         <Image marginLeft='10px' boxSize='65px' rounded='full' src={src} objectFit='cover'/>
-        <Text width='140px' textAlign='center' fontSize='20px'>ここに名前</Text>
+        <Text width='140px' textAlign='center' fontSize='20px'>{localStorage.getItem('user_id')}</Text>
       </HStack>
     </>
   )
