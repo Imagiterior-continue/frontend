@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { VStack, HStack, Text, WrapItem, Box, Wrap } from '@chakra-ui/layout'
 import { useDisclosure } from '@chakra-ui/hooks'
-import RoomInfo from '../components/button/RoomButton'
+import RoomButton from '../components/button/RoomButton'
 import roomList from '../Data/roomList.json'
 import BackButton from '../components/button/BackButton'
 import DeleteModal from '../components/modal/DeleteModal'
@@ -20,7 +20,7 @@ function Delete (): JSX.Element {
       <>
         <WrapItem key={index} onClick={onOpen}>
           <WrapItem onClick={ () => { setRoomName(name) } }>
-            <RoomInfo title={name} image={image} type='red'/>
+            <RoomButton title={name} image={image} type='red' onClick={() => {}}/>
           </WrapItem>
         </WrapItem>
       </>
