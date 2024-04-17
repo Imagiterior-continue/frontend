@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { VStack, HStack, Spacer, Text, WrapItem, Box, Wrap, Link } from '@chakra-ui/layout'
+import { useDisclosure } from '@chakra-ui/hooks'
 import axios from 'axios'
 import { baseURL } from '../Data/baseURL'
-import RoomInfo from '../components/button/RoomButton'
+import RoomButton from '../components/button/RoomButton'
 import IconButton from '../components/button/IconButton'
 import LogOutButton from '../components/button/LogoutButton'
+import DeleteModal from '../components/modal/DeleteModal'
 import tempRoomList from '../Data/roomList.json'
 
 interface room_type {
@@ -17,6 +19,8 @@ function List (): JSX.Element {
   const [isList, setIsList] = useState<boolean>(true)
   // 取得した部屋の情報
   const [roomList, setRoomList] = useState<any>([])
+  // 削除確認モーダル用
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   useEffect(() => {
     // ユーザーIDの取得
@@ -47,15 +51,14 @@ function List (): JSX.Element {
   const AllRooms: JSX.Element[] = roomList.map(({ name, image }: room_type, index: number) => {
     return (
       <WrapItem key={index}>
-        <Link href='./design' style={{ textDecoration: 'none' }}>
-          {isList ? <RoomInfo title={name} image={image} type='green'/> : <RoomInfo title={name} image={image} type='red'/>}
-        </Link>
+        {isList ? <RoomButton title={name} image={image} type='green' onClick={() => { window.location.href = '/design' }}/> : <RoomButton title={name} image={image} type='red' onClick={onOpen}/>}
       </WrapItem>
     )
   })
 
   return (
     <>
+      <DeleteModal name={'削除する部屋名'} isOpen={isOpen} onClose={onClose}/>
       <VStack marginTop='10px' justify='center'>
         <HStack paddingRight='20px' w='100%' h='20px'>
           <Spacer/>
@@ -66,7 +69,9 @@ function List (): JSX.Element {
         </Text>
         <HStack width='50%'>
           <Spacer/>
-          <Text textAlign='right' color='#FF3333' cursor='pointer' transition='.2s' _hover={{ color: '#FF0000' }} onClick={() => { setIsList(!isList) }}>部屋を削除する</Text>
+          <Text textAlign='right' color={isList ? '#FF3333' : '#70D74C'} cursor='pointer' transition='.2s' _hover={{ color: isList ? '#FF0000' : '#70D74C' }} onClick={() => { setIsList(!isList) }}>
+            {isList ? '部屋を削除する' : '部屋を編集する'}
+          </Text>
         </HStack>
         <Box w='60%' marginTop='40px' marginBottom='40px'>
           <Wrap spacing='50px' justify='center'>
