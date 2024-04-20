@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { VStack, HStack, Spacer, Text, WrapItem, Box, Wrap, Link } from '@chakra-ui/layout'
 import { useDisclosure } from '@chakra-ui/hooks'
-// import axios from 'axios'
-// import { baseURL } from '../Data/baseURL'
 import RoomButton from '../components/button/RoomButton'
 import IconButton from '../components/button/IconButton'
 import LogoutButton from '../components/button/LogoutButton'
@@ -28,34 +26,14 @@ function List ({ handleSignout }: Props): JSX.Element {
 
   // 未ログインのときはログイン画面に遷移
   useEffect(() => {
-    if (localStorage.getItem('user_id') === null) {
+    if (localStorage.getItem('uid') === null) {
       window.location.href = '/'
-    }
-    // ユーザーIDの取得
-    const query = new URLSearchParams(location.search)
-    const userId = query.get('user_id')
-    if (userId != null) {
-      localStorage.setItem('user_id', userId)
     }
     // TODO: API接続出来たら消す
     setRoomList(tempRoomList)
-
-    // 部屋情報の取得
-  //   axios
-  //     .get(
-  //       baseURL +
-  //         `user_layout/${localStorage.getItem('user_id')}`
-  //     )
-  //     .then((response) => {
-  //       console.log(response.data)
-  //       setRoomList(response.data)
-  //     })
-  //     .catch((error) => {
-  //       console.log(error)
-  //     })
   }, [])
 
-  // TODO:APIで取得したユーザー情報の形式を確認した後、見直したい
+  // TODO: APIで取得したユーザー情報の形式を確認した後、見直したい
   const AllRooms: JSX.Element[] = roomList.map(({ name, image }: room_type, index: number) => {
     return (
       <WrapItem key={index}>

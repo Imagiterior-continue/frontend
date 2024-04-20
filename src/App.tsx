@@ -4,7 +4,6 @@ import { Route, Routes } from 'react-router-dom'
 import { ChakraProvider } from '@chakra-ui/react'
 import Login from './pages/Login'
 import List from './pages/List'
-import Delete from './pages/Delete'
 import Design from './pages/Design'
 import NoMatch from './pages/NoMatch'
 import Sample from './pages/Sample'
@@ -23,7 +22,7 @@ function App (): JSX.Element {
       if (result.user.uid !== null) {
         userId = result.user.uid
       }
-      localStorage.setItem('user_id', userId)
+      localStorage.setItem('uid', userId)
 
       let displayName: string = ''
       if (result.user.displayName !== null) {
@@ -49,7 +48,7 @@ function App (): JSX.Element {
     try {
       await signOut(auth)
       localStorage.removeItem('displayName')
-      localStorage.removeItem('user_id')
+      localStorage.removeItem('uid')
       localStorage.removeItem('photoURL')
     } catch (error) {
       console.error('ログアウトエラー:', error)
@@ -62,7 +61,6 @@ function App (): JSX.Element {
         <Routes>
           <Route path='/' element={<Login handleSignIn={handleSignIn}/>} />
           <Route path='/list' element={<List handleSignout={handleSignOut}/>} />
-          <Route path='/delete' element={<Delete/>} />
           <Route path='/design' element={<Design handleSignout={handleSignOut}/>} />
           <Route path='*' element={<NoMatch/>} />
           <Route path='/sample' element={<Sample/>} />

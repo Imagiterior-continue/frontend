@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-// import axios from 'axios'
 import { VStack, HStack, Spacer, Center, Box } from '@chakra-ui/layout'
 import SideBar from '../components/SideBar'
 import BackButton from '../components/button/BackButton'
@@ -18,7 +17,7 @@ interface Props {
 function Design ({ handleSignout }: Props): JSX.Element {
   // 未ログインのときはログイン画面に遷移
   useEffect(() => {
-    if (localStorage.getItem('user_id') === null) {
+    if (localStorage.getItem('uid') === null) {
       window.location.href = '/'
     }
   }, [])
@@ -59,17 +58,6 @@ function Design ({ handleSignout }: Props): JSX.Element {
     setInteriorsInfo(newInteriorsInfo)
   }
 
-  const saveLayout: () => void = () => {
-    // axios
-    //   .post(`http://127.0.0.1:8000/save_room_detail?user_id=user1&room_id=room1&room_name=${name}&furniture_list=${JSON.stringify(interiorsInfo)}`)
-    //   .then((response) => {
-    //     console.log(response)
-    //   })
-    //   .catch((error) => {
-    //     console.error(error)
-    //   })
-  }
-
   return (
     <>
       <SideBar addInteriors={addInteriors}/>
@@ -77,7 +65,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
         <HStack width='97%' height='50px'>
           <BackButton/>
           <Spacer/>
-          <IconButton type='save' event={ () => { saveLayout() } }/>
+          <IconButton type='save' event={ () => { console.log('ここで保存') } }/>
           <Box width='20px'/>
           <LogoutButton handleSignout={handleSignout}/>
         </HStack>
