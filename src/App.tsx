@@ -12,8 +12,6 @@ import { signInWithPopup, signOut } from 'firebase/auth'
 import { auth, googleProvider } from './hooks/firebase'
 
 function App (): JSX.Element {
-  console.log(localStorage.getItem('displayName'), localStorage.getItem('email'), localStorage.getItem('photoURL'))
-
   // ログイン
   const handleSignIn: any = async () => {
     try {
@@ -21,17 +19,17 @@ function App (): JSX.Element {
       const result = await signInWithPopup(auth, googleProvider)
 
       // ログイン成功時の処理
+      let userId: string = ''
+      if (result.user.uid !== null) {
+        userId = result.user.uid
+      }
+      localStorage.setItem('user_id', userId)
+
       let displayName: string = ''
       if (result.user.displayName !== null) {
         displayName = result.user.displayName
       }
       localStorage.setItem('displayName', displayName)
-
-      let email: string = ''
-      if (result.user.email !== null) {
-        email = result.user.email
-      }
-      localStorage.setItem('email', email)
 
       let photoURL: string = ''
       if (result.user.photoURL !== null) {
@@ -51,7 +49,7 @@ function App (): JSX.Element {
     try {
       await signOut(auth)
       localStorage.removeItem('displayName')
-      localStorage.removeItem('email')
+      localStorage.removeItem('user_id')
       localStorage.removeItem('photoURL')
     } catch (error) {
       console.error('ログアウトエラー:', error)
@@ -63,9 +61,9 @@ function App (): JSX.Element {
       <ChakraProvider>
         <Routes>
           <Route path='/' element={<Login handleSignIn={handleSignIn}/>} />
-          <Route path='/list' element={<List handleSignOut={handleSignOut}/>} />
+          <Route path='/list' element={<List handleSignout={handleSignOut}/>} />
           <Route path='/delete' element={<Delete/>} />
-          <Route path='/design' element={<Design handleSignOut={handleSignOut}/>} />
+          <Route path='/design' element={<Design handleSignout={handleSignOut}/>} />
           <Route path='*' element={<NoMatch/>} />
           <Route path='/sample' element={<Sample/>} />
         </Routes>
