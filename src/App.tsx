@@ -6,6 +6,7 @@ import Login from './pages/Login'
 import List from './pages/List'
 import Design from './pages/Design'
 import NoMatch from './pages/NoMatch'
+import NoLogin from './pages/NoLogin'
 import Sample from './pages/Sample'
 import { signInWithPopup, signOut } from 'firebase/auth'
 import { auth, googleProvider } from './hooks/firebase'
@@ -62,6 +63,7 @@ function App (): JSX.Element {
           <Route path='/' element={<Login handleSignIn={handleSignIn}/>} />
           <Route path='/list' element={<List handleSignout={handleSignOut}/>} />
           <Route path='/design' element={<Design handleSignout={handleSignOut}/>} />
+          <Route path='/nologin' element={<NoLogin/>}/>
           <Route path='*' element={<NoMatch/>} />
           <Route path='/sample' element={<Sample/>} />
         </Routes>

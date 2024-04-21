@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { VStack, HStack, Spacer, Text, WrapItem, Box, Wrap, Link } from '@chakra-ui/layout'
+import { VStack, HStack, Spacer, Text, WrapItem, Box, Wrap } from '@chakra-ui/layout'
 import { useDisclosure } from '@chakra-ui/hooks'
 import RoomButton from '../components/button/RoomButton'
-import IconButton from '../components/button/IconButton'
 import LogoutButton from '../components/button/LogoutButton'
 import DeleteModal from '../components/modal/DeleteModal'
 import tempRoomList from '../Data/roomList.json'
@@ -27,7 +26,7 @@ function List ({ handleSignout }: Props): JSX.Element {
   // 未ログインのときはログイン画面に遷移
   useEffect(() => {
     if (localStorage.getItem('uid') === null) {
-      window.location.href = '/'
+      window.location.href = '/nologin'
     }
     // TODO: API接続出来たら消す
     setRoomList(tempRoomList)
@@ -64,9 +63,6 @@ function List ({ handleSignout }: Props): JSX.Element {
             {AllRooms}
           </Wrap>
         </Box>
-        <Link href='/design'>
-          <IconButton type='addRoom' event={() => { }}/>
-        </Link>
       </VStack>
     </>
   )

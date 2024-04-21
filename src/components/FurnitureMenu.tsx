@@ -13,10 +13,10 @@ interface furniture_type {
 interface Props {
   title: string
   items: furniture_type[]
-  addInteriors: (fileName: string, imageSize: number[]) => void
+  addInteriorInfo: (newFileName: string, newImageSize: number[]) => void
 }
 
-function FurnitureMenu ({ title, items, addInteriors }: Props): JSX.Element {
+function FurnitureMenu ({ title, items, addInteriorInfo }: Props): JSX.Element {
   const AllFurnitures: JSX.Element[] = items.map(({ name, size, fileName, imageSize }: furniture_type, index: number) => {
     return (
       <FurnitureInfo key={index} name={name} size={size} image={`./image_3D/${fileName}_3D.png`} onClick={() => { addInteriors(fileName, imageSize) }}/>
