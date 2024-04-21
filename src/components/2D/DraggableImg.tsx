@@ -29,10 +29,12 @@ function DraggableImg ({ fileName, imageSize, interiors, addInteriorsInfo, updat
     addInteriorsInfo(newIndex, fileName)
   }, [])
 
-  if (isClicking) {
-    // eslint-disable-next-line
-    updateInteriorsInfo(index, [interact.x * 1.8 / 350 as number, -0.5, interact.y * 1.8 /350 as number], interact.rotate as number)
-  }
+  useEffect(() => {
+    if (isClicking) {
+      // eslint-disable-next-line
+      updateInteriorsInfo(index, [interact.x * 1.8 / 350 as number, -0.5, interact.y * 1.8 /350 as number], interact.rotate as number)
+    }
+  }, [interact.x, interact.y])
   // console.log(`x:${interact.x}, y:${interact.y}, rotate:${interact.rotate}, index:${index}`)
 
   return (
