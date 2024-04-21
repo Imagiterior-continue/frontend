@@ -24,7 +24,6 @@ function Design ({ handleSignout }: Props): JSX.Element {
 
   /* 部屋名の取得 */
   const [name, setName] = useState<string>('')
-  console.log(name)
 
   // 配置されている全ての家具の情報を保持する配列
   const [interiorInfo, setInteriorInfo] = useState<interiorType[]>([])
@@ -84,7 +83,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
         <HStack width='97%' height='50px'>
           <BackButton/>
           <Spacer/>
-          <IconButton type='save' event={ () => { console.log('ここで保存') } }/>
+          <IconButton type='save' event={ () => { console.log(name) } }/>
           <Box width='20px'/>
           <LogoutButton handleSignout={handleSignout}/>
         </HStack>
