@@ -26,10 +26,12 @@ function DraggableImg (props: Props): JSX.Element {
     setIndex(props.index)
   }, [])
 
-  if (isClicking) {
-    // eslint-disable-next-line
-    props.updateInteriorInfo(index, [interact.x * 1.8 / 350 as number, -0.5, interact.y * 1.8 /350 as number], interact.rotation as number)
-  }
+  useEffect(() => {
+    if (isClicking) {
+      // eslint-disable-next-line
+      props.updateInteriorInfo(index, [interact.x * 1.8 / 350 as number, -0.5, interact.y * 1.8 /350 as number], interact.rotate as number)
+    }
+  }, [interact.x, interact.y])
   // console.log(`x:${interact.x}, y:${interact.y}, rotate:${interact.rotate}, index:${index}`)
 
   return (
