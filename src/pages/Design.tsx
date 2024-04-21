@@ -18,7 +18,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
   // 未ログインのときはログイン画面に遷移
   useEffect(() => {
     if (localStorage.getItem('uid') === null) {
-      window.location.href = '/'
+      window.location.href = '/nologin'
     }
   }, [])
 
