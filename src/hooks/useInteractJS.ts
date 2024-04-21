@@ -25,6 +25,21 @@ export function useInteractJS (position: Partial<typeof initPosition> = initPosi
   const interactRef = useRef([])
   let { x, y, width, height, rotation } = _position
 
+  const collisionDetection: () => void = () => {
+    if (x < -(350 - width / 2)) {
+      x = -(350 - width / 2)
+    }
+    if (x > 350 - width / 2) {
+      x = 350 - width / 2
+    }
+    if (y < -(350 - height / 2)) {
+      y = -(350 - height / 2)
+    }
+    if (y > 350 - height / 2) {
+      y = 350 - height / 2
+    }
+  }
+
   const enable: () => void = () => {
     interact((interactRef.current as unknown) as HTMLElement)
       // ドラッグでコンポーネントを動かすための処理を追加
@@ -34,18 +49,7 @@ export function useInteractJS (position: Partial<typeof initPosition> = initPosi
       .on('dragmove', event => {
         x += event.dx
         y += event.dy
-        if (x < -(350 - width / 2)) {
-          x = -(350 - width / 2)
-        }
-        if (x > 350 - width / 2) {
-          x = 350 - width / 2
-        }
-        if (y < -(350 - height / 2)) {
-          y = -(350 - height / 2)
-        }
-        if (y > 350 - height / 2) {
-          y = 350 - height / 2
-        }
+        collisionDetection()
         // ドラッグ後の座標をstateに保存する
         setPosition({
           width,
@@ -63,18 +67,7 @@ export function useInteractJS (position: Partial<typeof initPosition> = initPosi
         const temp = width
         width = height
         height = temp
-        if (x < -(350 - width / 2)) {
-          x = -(350 - width / 2)
-        }
-        if (x > 350 - width / 2) {
-          x = 350 - width / 2
-        }
-        if (y < -(350 - height / 2)) {
-          y = -(350 - height / 2)
-        }
-        if (y > 350 - height / 2) {
-          y = 350 - height / 2
-        }
+        collisionDetection()
         setPosition({
           width,
           height,
