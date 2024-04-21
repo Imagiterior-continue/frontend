@@ -1,7 +1,7 @@
 import React from 'react'
 import FurnitureInfo from './display/FurnitureInfo'
 import { AccordionItem, AccordionButton, AccordionIcon, AccordionPanel } from '@chakra-ui/accordion'
-import { Box, WrapItem, VStack } from '@chakra-ui/layout'
+import { Box, VStack } from '@chakra-ui/layout'
 
 interface furniture_type {
   name: string
@@ -19,9 +19,7 @@ interface Props {
 function FurnitureMenu ({ title, items, addInteriors }: Props): JSX.Element {
   const AllFurnitures: JSX.Element[] = items.map(({ name, size, fileName, imageSize }: furniture_type, index: number) => {
     return (
-      <WrapItem key={index} onClick={() => { addInteriors(fileName, imageSize) }}>
-        <FurnitureInfo name={name} size={size} image={`./image_3D/${fileName}_3D.png`}/>
-      </WrapItem>
+      <FurnitureInfo key={index} name={name} size={size} image={`./image_3D/${fileName}_3D.png`} onClick={() => { addInteriors(fileName, imageSize) }}/>
     )
   })
   return (

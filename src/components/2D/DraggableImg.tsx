@@ -34,6 +34,7 @@ function DraggableImg ({ fileName, imageSize, interiors, addInteriorsInfo, updat
     updateInteriorsInfo(index, [interact.x * 1.8 / 350 as number, -0.5, interact.y * 1.8 /350 as number], interact.rotate as number)
   }
   // console.log(`x:${interact.x}, y:${interact.y}, rotate:${interact.rotate}, index:${index}`)
+
   return (
     <>
       <div key={interiors.length} style={{ ...interact.style }} ref={interact.ref} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
