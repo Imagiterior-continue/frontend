@@ -12,7 +12,7 @@ const initPosition = {
   height: 100,
   x: 0,
   y: 0,
-  rotate: 0
+  rotation: 0
 }
 
 export function useInteractJS (position: Partial<typeof initPosition> = initPosition): any {
@@ -23,7 +23,7 @@ export function useInteractJS (position: Partial<typeof initPosition> = initPosi
   })
 
   const interactRef = useRef([])
-  let { x, y, width, height, rotate } = _position
+  let { x, y, width, height, rotation } = _position
 
   const enable: () => void = () => {
     interact((interactRef.current as unknown) as HTMLElement)
@@ -52,13 +52,13 @@ export function useInteractJS (position: Partial<typeof initPosition> = initPosi
           height,
           x,
           y,
-          rotate
+          rotation
         })
       })
       .on('tap', event => {
-        rotate += 90
-        if (rotate >= 360) {
-          rotate = 0
+        rotation += 90
+        if (rotation >= 360) {
+          rotation = 0
         }
         const temp = width
         width = height
@@ -80,7 +80,7 @@ export function useInteractJS (position: Partial<typeof initPosition> = initPosi
           height,
           x,
           y,
-          rotate
+          rotation
         })
       })
   }
@@ -98,11 +98,11 @@ export function useInteractJS (position: Partial<typeof initPosition> = initPosi
     ref: interactRef,
     // 返り値にCSSのスタイルを追加する。このスタイルを動かしたいコンポーネントに適用することで、コンポーネントが実際に動くようになる
     style: {
-      transform: `translate3D(${_position.x}px, ${_position.y}px, 0) rotate(${rotate}deg)`,
+      transform: `translate3D(${_position.x}px, ${_position.y}px, 0) rotate(${rotation}deg)`,
       position: 'absolute' as CSSProperties['position']
     },
     x: _position.x,
     y: _position.y,
-    rotate: _position.rotate
+    rotation: _position.rotation
   }
 }
