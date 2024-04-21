@@ -5,17 +5,17 @@ import LoadModels from './LoadModels'
 import type { interiorType } from '../../type/InteriorType'
 
 interface Props {
-  interiorsInfo: interiorType[]
+  interiorInfo: interiorType[]
 }
 
-function Viewport3D ({ interiorsInfo }: Props): JSX.Element {
+function Viewport3D ({ interiorInfo }: Props): JSX.Element {
   let nonEmptyInteriorsInfo: interiorType[] = []
-  if (interiorsInfo.length !== 0) {
-    nonEmptyInteriorsInfo = interiorsInfo.filter(item => item.fileName !== '')
+  if (interiorInfo.length !== 0) {
+    nonEmptyInteriorsInfo = interiorInfo.filter(item => item.fileName !== '')
   }
-  const ModelList: JSX.Element[] = nonEmptyInteriorsInfo.map(({ fileName, position, rotate }: any, index: number) => {
+  const ModelList: JSX.Element[] = nonEmptyInteriorsInfo.map(({ fileName, position, rotation, size, imageSize }: any, index: number) => {
     return (
-      <LoadModels key={index} url={`${fileName}.gltf`} position={position} rotation={[0, -(rotate * 0.01745329), 0]}/>
+      <LoadModels key={index} url={`${fileName}.gltf`} position={position} rotation={[0, -(rotation * 0.01745329), 0]}/>
     )
   })
   return (

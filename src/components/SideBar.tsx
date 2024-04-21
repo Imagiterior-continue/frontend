@@ -6,14 +6,14 @@ import FurnitureMenu from './FurnitureMenu'
 import furnitures from '../Data/furnitures.json'
 
 interface Props {
-  addInteriors: (fileName: string, imageSize: number[]) => void
+  addInteriorInfo: (newFileName: string, newImageSize: number[]) => void
 }
 
-function SideBar ({ addInteriors }: Props): JSX.Element {
+function SideBar ({ addInteriorInfo }: Props): JSX.Element {
   const AccordionItems: JSX.Element[] = furnitures.map(({ category, items }: any, index: number) => {
     return (
       <WrapItem key={index}>
-       <FurnitureMenu title={category} items={items} addInteriors={addInteriors}/>
+       <FurnitureMenu title={category} items={items} addInteriorInfo={addInteriorInfo}/>
       </WrapItem>
     )
   })

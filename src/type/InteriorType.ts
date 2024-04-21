@@ -1,5 +1,7 @@
-export type interiorType = {
+export interface interiorType {
   fileName: string
   position: number[]
-  rotate: number
+  rotation: number
+  size: number[]
+  imageSize: number[]
 }
