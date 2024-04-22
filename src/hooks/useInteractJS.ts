@@ -15,7 +15,7 @@ const initPosition = {
   rotation: 0
 }
 
-export function useInteractJS (position: Partial<typeof initPosition> = initPosition): any {
+export function useInteractJS (position: Partial<typeof initPosition>): any {
   // 引数で指定したpositionを初期値として、Stateを作る
   const [_position, setPosition] = useState<typeof initPosition>({
     ...initPosition,

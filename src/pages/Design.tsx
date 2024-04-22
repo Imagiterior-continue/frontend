@@ -27,9 +27,8 @@ function Design ({ handleSignout }: Props): JSX.Element {
 
   // 配置されている全ての家具の情報を保持する配列
   const [furnitureList, setFurnitureList] = useState<furnitureType[]>([])
-  const [furnitureNum, setFurnitureNum] = useState<number>(0)
   const [draggableImgs, setDraggableImgs] = useState<JSX.Element[]>([])
-  const [editedFurniture, setEditedFurniture] = useState<number>(0)
+  const [target, setTarget] = useState<number>(0)
 
   /**
    * 家具の追加を行う
@@ -38,7 +37,6 @@ function Design ({ handleSignout }: Props): JSX.Element {
    */
   const addFurniture: (newFileName: string, newImageSize: number[]) => void = (newFileName: string, newImageSize: number[]) => {
     setFurnitureList((prev) => {
-      setFurnitureNum(furnitureNum + 1)
       const newFurniture: furnitureType = {
         fileName: newFileName,
         position: [0, -0.5, 0],
@@ -48,6 +46,8 @@ function Design ({ handleSignout }: Props): JSX.Element {
       }
       return [...prev, newFurniture]
     })
+    setTarget(furnitureList.length)
+    setDraggableImgs([])
   }
 
   /**
@@ -57,40 +57,36 @@ function Design ({ handleSignout }: Props): JSX.Element {
    * @param rotation 回転
    */
   const updateFurnitureList: (index: number, position: number[], rotation: number) => void = (index: number, position: number[], rotation: number) => {
+    setTarget(index)
     setFurnitureList((prev) => {
       const newFurnitureList: furnitureType[] = [...prev]
       newFurnitureList[index].position = position
       newFurnitureList[index].rotation = rotation
       return newFurnitureList
     })
-    setEditedFurniture(index)
   }
 
   /**
    * 家具の削除を行う
    * @param index 削除する家具のインデックス
    */
-  const deleteFurniture: (index: number) => void = (index: number) => {
-    setFurnitureNum(furnitureNum - 1)
-    setFurnitureList((prev) => {
-      if (index === 0 && prev.length === 1) {
-        return []
-      } else {
-        const newFurnitureList: furnitureType[] = [...prev].slice(index, 1)
-        return newFurnitureList
-      }
-    })
+  const deleteFurniture: () => void = () => {
+    const deleteItem: furnitureType = furnitureList[target]
+    const newFurnitureList: furnitureType[] = [...furnitureList].filter(i => i !== deleteItem)
+    setFurnitureList(newFurnitureList)
+    setTarget(-1)
+    setDraggableImgs([])
   }
 
   // 家具の追加・削除後にdraggableImgsを更新する
   useEffect(() => {
     const newDraggableImgs: JSX.Element[] = furnitureList.map((item, index) => {
       return (
-        <DraggableImg key={index} index={index} fileName={item.fileName} imageSize={item.imageSize} updateFurnitureList={updateFurnitureList}/>
+        <DraggableImg key={index} index={index} fileName={item.fileName} imageSize={item.imageSize} position={item.position} rotation={item.rotation} updateFurnitureList={updateFurnitureList} isEdited={index === target}/>
       )
     })
     setDraggableImgs(newDraggableImgs)
-  }, [furnitureNum])
+  }, [furnitureList.length, target])
 
   return (
     <>
@@ -99,7 +95,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
         <HStack width='97%' height='50px'>
           <BackButton/>
           <Spacer/>
-          <IconButton type='delete' event={ () => { deleteFurniture(editedFurniture) } }/>
+          <IconButton type='delete' event={ () => { if (target !== -1) deleteFurniture() } }/>
           <IconButton type='save' event={ () => { console.log(name) } }/>
           <Box width='20px'/>
           <LogoutButton handleSignout={handleSignout}/>
