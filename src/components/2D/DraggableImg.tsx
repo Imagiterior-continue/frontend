@@ -12,7 +12,8 @@ interface Props {
 }
 
 function DraggableImg (props: Props): JSX.Element {
-  const interact = useInteractJS({ width: props.imageSize[0], height: props.imageSize[1], x: props.position[0] * 350 / 1.8, y: props.position[2] * 350 / 1.8, rotation: props.rotation })
+  const interact = useInteractJS({ width: props.imageSize[props.rotation % 180 === 0 ? 0 : 1], height: props.imageSize[props.rotation % 180 === 0 ? 1 : 0], x: props.position[0] * 350 / 1.8, y: props.position[2] * 350 / 1.8, rotation: props.rotation })
+
   // インデックス
   const [index, setIndex] = useState<number>(0)
 
