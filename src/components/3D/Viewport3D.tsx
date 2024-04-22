@@ -2,18 +2,14 @@ import React from 'react'
 import { OrbitControls, Environment } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import LoadModels from './LoadModels'
-import type { interiorType } from '../../type/InteriorType'
+import type { furnitureType } from '../../type/furnitureType'
 
 interface Props {
-  interiorInfo: interiorType[]
+  furnitureList: furnitureType[]
 }
 
-function Viewport3D ({ interiorInfo }: Props): JSX.Element {
-  let nonEmptyInteriorsInfo: interiorType[] = []
-  if (interiorInfo.length !== 0) {
-    nonEmptyInteriorsInfo = interiorInfo.filter(item => item.fileName !== '')
-  }
-  const ModelList: JSX.Element[] = nonEmptyInteriorsInfo.map(({ fileName, position, rotation, size, imageSize }: any, index: number) => {
+function Viewport3D ({ furnitureList }: Props): JSX.Element {
+  const ModelList: JSX.Element[] = furnitureList.map(({ fileName, position, rotation, size, imageSize }: any, index: number) => {
     return (
       <LoadModels key={index} url={`${fileName}.gltf`} position={position} rotation={[0, -(rotation * 0.01745329), 0]}/>
     )

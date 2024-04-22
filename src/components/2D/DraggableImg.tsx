@@ -5,7 +5,7 @@ interface Props {
   index: number
   fileName: string
   imageSize: number[]
-  updateInteriorInfo: (index: number, position: number[], rotation: number) => void
+  updateFurnitureList: (index: number, position: number[], rotation: number) => void
 }
 
 function DraggableImg (props: Props): JSX.Element {
@@ -29,7 +29,7 @@ function DraggableImg (props: Props): JSX.Element {
   useEffect(() => {
     if (isClicking) {
       // eslint-disable-next-line
-      props.updateInteriorInfo(index, [interact.x * 1.8 / 350 as number, -0.5, interact.y * 1.8 /350 as number], interact.rotation as number)
+      props.updateFurnitureList(index, [interact.x * 1.8 / 350 as number, -0.5, interact.y * 1.8 /350 as number], interact.rotation as number)
     }
   }, [interact.x, interact.y, interact.rotation])
   // console.log(`x:${interact.x}, y:${interact.y}, rotate:${interact.rotate}, index:${index}`)

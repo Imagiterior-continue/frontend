@@ -1,4 +1,4 @@
-export interface interiorType {
+export interface furnitureType {
   fileName: string
   position: number[]
   rotation: number
