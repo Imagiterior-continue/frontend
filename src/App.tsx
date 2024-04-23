@@ -19,23 +19,9 @@ function App (): JSX.Element {
       const result = await signInWithPopup(auth, googleProvider)
 
       // ログイン成功時の処理
-      let userId: string = ''
-      if (result.user.uid !== null) {
-        userId = result.user.uid
-      }
-      localStorage.setItem('uid', userId)
-
-      let displayName: string = ''
-      if (result.user.displayName !== null) {
-        displayName = result.user.displayName
-      }
-      localStorage.setItem('displayName', displayName)
-
-      let photoURL: string = ''
-      if (result.user.photoURL !== null) {
-        photoURL = result.user.photoURL
-      }
-      localStorage.setItem('photoURL', photoURL)
+      localStorage.setItem('uid', result.user.uid)
+      localStorage.setItem('displayName', result.user.displayName ?? '')
+      localStorage.setItem('photoURL', result.user.photoURL ?? '')
 
       window.location.href = '/list'
     } catch (error) {

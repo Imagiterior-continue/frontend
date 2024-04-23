@@ -15,14 +15,14 @@ const initPosition = {
   rotation: 0
 }
 
-export function useInteractJS (position: Partial<typeof initPosition> = initPosition): any {
+export function useInteractJS (position: Partial<typeof initPosition>): any {
   // 引数で指定したpositionを初期値として、Stateを作る
   const [_position, setPosition] = useState<typeof initPosition>({
     ...initPosition,
     ...position
   })
 
-  const interactRef = useRef([])
+  const interactRef = useRef<HTMLElement | null>(null)
   let { x, y, width, height, rotation } = _position
 
   const collisionDetection: () => void = () => {
@@ -41,7 +41,7 @@ export function useInteractJS (position: Partial<typeof initPosition> = initPosi
   }
 
   const enable: () => void = () => {
-    interact((interactRef.current as unknown) as HTMLElement)
+    interact((interactRef?.current as unknown) as HTMLElement)
       // ドラッグでコンポーネントを動かすための処理を追加
       .draggable({
         inertia: false
@@ -79,7 +79,9 @@ export function useInteractJS (position: Partial<typeof initPosition> = initPosi
   }
 
   const disable: any = () => {
-    interact((interactRef.current as unknown) as HTMLElement).unset()
+    if (interactRef?.current !== null) {
+      interact((interactRef?.current as unknown) as HTMLElement).unset()
+    }
   }
 
   useEffect(() => {
@@ -91,7 +93,7 @@ export function useInteractJS (position: Partial<typeof initPosition> = initPosi
     ref: interactRef,
     // 返り値にCSSのスタイルを追加する。このスタイルを動かしたいコンポーネントに適用することで、コンポーネントが実際に動くようになる
     style: {
-      transform: `translate(${_position.x}px, ${_position.y}px) translate(-50%, -50%) rotate(${rotation}deg)`,
+      transform: `translate(${_position.x}px, ${_position.y}px) rotate(${rotation}deg)`,
       position: 'absolute' as CSSProperties['position']
     },
     x: _position.x,

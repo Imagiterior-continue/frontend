@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { VStack, HStack, Spacer, Center, Box, WrapItem } from '@chakra-ui/layout'
+import { VStack, HStack, Spacer, Center, Box } from '@chakra-ui/layout'
 import SideBar from '../components/SideBar'
 import BackButton from '../components/button/BackButton'
 import LogoutButton from '../components/button/LogoutButton'
@@ -7,7 +7,7 @@ import RoomForm from '../components/RoomForm'
 import IconButton from '../components/button/IconButton'
 import Guide from '../components/display/Guide'
 import DraggableImg from '../components/2D/DraggableImg'
-import type { interiorType } from '../type/InteriorType'
+import type { furnitureType } from '../type/furnitureType'
 import Viewport3D from '../components/3D/Viewport3D'
 
 interface Props {
@@ -22,31 +22,32 @@ function Design ({ handleSignout }: Props): JSX.Element {
     }
   }, [])
 
-  /* 部屋名の取得 */
+  /* 部屋名 */
   const [name, setName] = useState<string>('')
 
   // 配置されている全ての家具の情報を保持する配列
-  const [interiorInfo, setInteriorInfo] = useState<interiorType[]>([])
-  const [interiorNum, setInteriorNum] = useState<number>(0)
+  const [furnitureList, setFurnitureList] = useState<furnitureType[]>([])
   const [draggableImgs, setDraggableImgs] = useState<JSX.Element[]>([])
+  const [target, setTarget] = useState<number>(0)
 
   /**
    * 家具の追加を行う
    * @param newFileName 追加する家具の名前
    * @param newImageSize 追加する家具の画像サイズ
    */
-  const addInteriorInfo: (newFileName: string, newImageSize: number[]) => void = (newFileName: string, newImageSize: number[]) => {
-    setInteriorInfo((prev) => {
-      setInteriorNum(interiorNum + 1)
-      const newInterior: interiorType = {
+  const addFurniture: (newFileName: string, newImageSize: number[]) => void = (newFileName: string, newImageSize: number[]) => {
+    setFurnitureList((prev) => {
+      const newFurniture: furnitureType = {
         fileName: newFileName,
         position: [0, -0.5, 0],
         rotation: 0,
         size: [1, 1, 1],
         imageSize: newImageSize
       }
-      return [...prev, newInterior]
+      return [...prev, newFurniture]
     })
+    setTarget(furnitureList.length)
+    setDraggableImgs([])
   }
 
   /**
@@ -55,34 +56,46 @@ function Design ({ handleSignout }: Props): JSX.Element {
    * @param position 位置
    * @param rotation 回転
    */
-  const updateInteriorInfo: (index: number, position: number[], rotation: number) => void = (index: number, position: number[], rotation: number) => {
-    setInteriorInfo((prev) => {
-      const newInteriorInfo: interiorType[] = [...prev]
-      newInteriorInfo[index].position = position
-      newInteriorInfo[index].rotation = rotation
-      return newInteriorInfo
+  const updateFurnitureList: (index: number, position: number[], rotation: number) => void = (index: number, position: number[], rotation: number) => {
+    setTarget(index)
+    setFurnitureList((prev) => {
+      const newFurnitureList: furnitureType[] = [...prev]
+      newFurnitureList[index].position = position
+      newFurnitureList[index].rotation = rotation
+      return newFurnitureList
     })
   }
 
-  // 新しく家具が配置されたらdraggableImgsを更新する
+  /**
+   * 家具の削除を行う
+   * @param index 削除する家具のインデックス
+   */
+  const deleteFurniture: () => void = () => {
+    const deleteItem: furnitureType = furnitureList[target]
+    const newFurnitureList: furnitureType[] = [...furnitureList].filter(i => i !== deleteItem)
+    setFurnitureList(newFurnitureList)
+    setTarget(-1)
+    setDraggableImgs([])
+  }
+
+  // 家具の追加・削除後にdraggableImgsを更新する
   useEffect(() => {
-    const newDraggableImgs: JSX.Element[] = interiorInfo.map((item, index) => {
+    const newDraggableImgs: JSX.Element[] = furnitureList.map((item, index) => {
       return (
-        <WrapItem key={index}>
-          <DraggableImg index={index} fileName={item.fileName} imageSize={item.imageSize} updateInteriorInfo={updateInteriorInfo}/>
-        </WrapItem>
+        <DraggableImg key={index} index={index} fileName={item.fileName} imageSize={item.imageSize} position={item.position} rotation={item.rotation} updateFurnitureList={updateFurnitureList} isEdited={index === target}/>
       )
     })
     setDraggableImgs(newDraggableImgs)
-  }, [interiorNum])
+  }, [furnitureList.length, target])
 
   return (
     <>
-      <SideBar addInteriorInfo={addInteriorInfo}/>
+      <SideBar addFurniture={addFurniture}/>
       <VStack marginLeft='15%' marginTop='20px' width='85%' height='100%'>
         <HStack width='97%' height='50px'>
           <BackButton/>
           <Spacer/>
+          <IconButton type='delete' event={ () => { if (target !== -1) deleteFurniture() } }/>
           <IconButton type='save' event={ () => { console.log(name) } }/>
           <Box width='20px'/>
           <LogoutButton handleSignout={handleSignout}/>
@@ -98,7 +111,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
           <Spacer/>
           <VStack>
             <HStack width='700px' height='50px'/>
-            <Viewport3D interiorInfo={interiorInfo}/>
+            <Viewport3D furnitureList={furnitureList}/>
           </VStack>
           <Spacer/>
         </HStack>
