@@ -9,6 +9,7 @@ import Guide from '../components/display/Guide'
 import DraggableImg from '../components/2D/DraggableImg'
 import type { furnitureType } from '../type/furnitureType'
 import Viewport3D from '../components/3D/Viewport3D'
+import { useToast } from '@chakra-ui/react'
 
 interface Props {
   handleSignout: () => void
@@ -29,6 +30,25 @@ function Design ({ handleSignout }: Props): JSX.Element {
   const [furnitureList, setFurnitureList] = useState<furnitureType[]>([])
   const [draggableImgs, setDraggableImgs] = useState<JSX.Element[]>([])
   const [target, setTarget] = useState<number>(0)
+
+  const toast = useToast()
+
+  const saveLayout = (name: string): void => {
+    const b = false
+
+    if (b) {
+      console.log(`部屋名 ${name}を保存しました。`)
+      toast(
+        {
+          title: '保存しました',
+          status: 'success',
+          duration: 6000,
+          isClosable: true
+        })
+    } else {
+      console.log(`部屋名 ${name}を保存できませんでした。`)
+    }
+  }
 
   /**
    * 家具の追加を行う
@@ -96,7 +116,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
           <BackButton/>
           <Spacer/>
           <IconButton type='delete' event={ () => { if (target !== -1) deleteFurniture() } }/>
-          <IconButton type='save' event={ () => { console.log(name) } }/>
+          <IconButton type='save' event={ () => { saveLayout(name) } }/>
           <Box width='20px'/>
           <LogoutButton handleSignout={handleSignout}/>
         </HStack>
