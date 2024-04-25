@@ -34,9 +34,9 @@ function Design ({ handleSignout }: Props): JSX.Element {
   const toast = useToast()
 
   const saveLayout = (name: string): void => {
-    const b = false
+    const flag = false
 
-    if (b) {
+    if (flag) {
       console.log(`部屋名 ${name}を保存しました。`)
       toast(
         {
