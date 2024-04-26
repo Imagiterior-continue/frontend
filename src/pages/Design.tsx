@@ -127,7 +127,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
           <BackButton />
           <Spacer />
           <IconButton type='delete' event={() => { if (target !== -1) deleteFurniture() }} />
-          <IconButton type='save' event={() => { saveLayout(name) }} />
+          <IconButton type='save' roomName = {name} event={() => { saveLayout(name) }} />
           <Box width='20px' />
           <LogoutButton handleSignout={handleSignout} />
         </HStack>
