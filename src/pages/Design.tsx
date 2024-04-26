@@ -34,16 +34,18 @@ function Design ({ handleSignout }: Props): JSX.Element {
   const toast = useToast()
 
   const saveLayout = (name: string): void => {
-    const flag = false
+    const flag = true
 
     if (flag) {
       console.log(`部屋名 ${name}を保存しました。`)
       toast(
         {
+          colorScheme: 'green',
           title: '保存しました',
           status: 'success',
           duration: 6000,
-          isClosable: true
+          isClosable: true,
+          position: 'top'
         })
     } else {
       console.log(`部屋名 ${name}を保存できませんでした。`)
@@ -53,7 +55,8 @@ function Design ({ handleSignout }: Props): JSX.Element {
           title: '保存に失敗しました',
           status: 'error',
           duration: 6000,
-          isClosable: true
+          isClosable: true,
+          position: 'top'
         })
     }
   }
