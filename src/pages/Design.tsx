@@ -47,6 +47,14 @@ function Design ({ handleSignout }: Props): JSX.Element {
         })
     } else {
       console.log(`部屋名 ${name}を保存できませんでした。`)
+      toast(
+        {
+          colorScheme: 'red',
+          title: '保存に失敗しました',
+          status: 'error',
+          duration: 6000,
+          isClosable: true
+        })
     }
   }
 
@@ -102,7 +110,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
   useEffect(() => {
     const newDraggableImgs: JSX.Element[] = furnitureList.map((item, index) => {
       return (
-        <DraggableImg key={index} index={index} fileName={item.fileName} imageSize={item.imageSize} position={item.position} rotation={item.rotation} updateFurnitureList={updateFurnitureList} isEdited={index === target}/>
+        <DraggableImg key={index} index={index} fileName={item.fileName} imageSize={item.imageSize} position={item.position} rotation={item.rotation} updateFurnitureList={updateFurnitureList} isEdited={index === target} />
       )
     })
     setDraggableImgs(newDraggableImgs)
@@ -110,33 +118,33 @@ function Design ({ handleSignout }: Props): JSX.Element {
 
   return (
     <>
-      <SideBar addFurniture={addFurniture}/>
+      <SideBar addFurniture={addFurniture} />
       <VStack marginLeft='15%' marginTop='20px' width='85%' height='100%'>
         <HStack width='97%' height='50px'>
-          <BackButton/>
-          <Spacer/>
-          <IconButton type='delete' event={ () => { if (target !== -1) deleteFurniture() } }/>
-          <IconButton type='save' event={ () => { saveLayout(name) } }/>
-          <Box width='20px'/>
-          <LogoutButton handleSignout={handleSignout}/>
+          <BackButton />
+          <Spacer />
+          <IconButton type='delete' event={() => { if (target !== -1) deleteFurniture() }} />
+          <IconButton type='save' event={() => { saveLayout(name) }} />
+          <Box width='20px' />
+          <LogoutButton handleSignout={handleSignout} />
         </HStack>
         <HStack width='97%' marginTop='20px'>
-          <Spacer/>
+          <Spacer />
           <VStack>
             <Center paddingLeft='40px' width='700px' height='50px'>
               <RoomForm setName={setName} />
             </Center>
             <Center width='700px' height='700px' bg='#ECECEC'>{draggableImgs}</Center>
           </VStack>
-          <Spacer/>
+          <Spacer />
           <VStack>
-            <HStack width='700px' height='50px'/>
-            <Viewport3D furnitureList={furnitureList}/>
+            <HStack width='700px' height='50px' />
+            <Viewport3D furnitureList={furnitureList} />
           </VStack>
-          <Spacer/>
+          <Spacer />
         </HStack>
         <HStack width='97%'>
-          <Guide/>
+          <Guide />
         </HStack>
       </VStack>
     </>
