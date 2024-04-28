@@ -1,6 +1,7 @@
 // 必要なSDKから必要な機能をインポート
 import { initializeApp } from 'firebase/app'
 import { getAuth, GoogleAuthProvider } from 'firebase/auth'
+import { getFirestore } from 'firebase/firestore/lite'
 
 // WebアプリのFirebase構成
 // Firebase JS SDK v7.20.0 以降の場合、measurementId はオプションです
@@ -23,4 +24,7 @@ const auth = getAuth(firebaseApp)
 // Google認証プロバイダの準備
 const googleProvider = new GoogleAuthProvider()
 
-export { auth, googleProvider }
+// Cloud Firestoreの初期化
+const db = getFirestore(firebaseApp)
+
+export { auth, googleProvider, db }

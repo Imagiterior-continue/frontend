@@ -9,7 +9,8 @@ import NoMatch from './pages/NoMatch'
 import NoLogin from './pages/NoLogin'
 import Sample from './pages/Sample'
 import { signInWithPopup, signOut } from 'firebase/auth'
-import { auth, googleProvider } from './hooks/firebase'
+import { auth, googleProvider, db } from './hooks/firebase'
+import { doc, setDoc } from 'firebase/firestore/lite'
 
 function App (): JSX.Element {
   // ログイン
@@ -22,6 +23,17 @@ function App (): JSX.Element {
       localStorage.setItem('uid', result.user.uid)
       localStorage.setItem('displayName', result.user.displayName ?? '')
       localStorage.setItem('photoURL', result.user.photoURL ?? '')
+
+      // ユーザー情報の保存
+      await setDoc(doc(db, result.user.uid, 'room_id_1'), {
+        furnitureList: []
+      })
+      await setDoc(doc(db, result.user.uid, 'room_id_2'), {
+        furnitureList: []
+      })
+      await setDoc(doc(db, result.user.uid, 'room_id_3'), {
+        furnitureList: []
+      })
 
       window.location.href = '/list'
     } catch (error) {
@@ -46,12 +58,12 @@ function App (): JSX.Element {
     <div className='App'>
       <ChakraProvider>
         <Routes>
-          <Route path='/' element={<Login handleSignIn={handleSignIn}/>} />
-          <Route path='/list' element={<List handleSignout={handleSignOut}/>} />
-          <Route path='/design' element={<Design handleSignout={handleSignOut}/>} />
-          <Route path='/nologin' element={<NoLogin/>}/>
-          <Route path='*' element={<NoMatch/>} />
-          <Route path='/sample' element={<Sample/>} />
+          <Route path='/' element={<Login handleSignIn={handleSignIn} />} />
+          <Route path='/list' element={<List handleSignout={handleSignOut} />} />
+          <Route path='/design' element={<Design handleSignout={handleSignOut} />} />
+          <Route path='/nologin' element={<NoLogin />} />
+          <Route path='*' element={<NoMatch />} />
+          <Route path='/sample' element={<Sample />} />
         </Routes>
       </ChakraProvider>
     </div>
