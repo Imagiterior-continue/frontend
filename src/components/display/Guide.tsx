@@ -1,5 +1,7 @@
 import React from 'react'
 import { VStack, HStack, Text, Spacer } from '@chakra-ui/layout'
+import { Popover, PopoverTrigger, PopoverContent, PopoverBody } from '@chakra-ui/react'
+import { Button } from '@chakra-ui/button'
 import { BsHandIndex } from 'react-icons/bs'
 import { RiDragMove2Line } from 'react-icons/ri'
 import { LuMousePointerClick } from 'react-icons/lu'
@@ -25,12 +27,22 @@ function Guide (): JSX.Element {
   return (
     <>
       <VStack width='760px' height='110px'>
-        <Text width='100%' paddingBottom='7px' paddingLeft='10px' marginBottom='7px' borderBottom='3px solid #EEEEEE' textAlign='left' fontSize='20px'>操作方法</Text>
-        <HStack width='95%' justifyItems='left'>
-          <GuidePart type='choose'/>
-          <GuidePart type='drag'/>
-          <GuidePart type='click'/>
-        </HStack>
+        <Text width='100%' paddingBottom='7px' paddingLeft='10px' marginBottom='7px' borderBottom='3px solid #EEEEEE' textAlign='left' fontSize='20px'>操作方法
+        <Popover>
+          <PopoverTrigger>
+            <Button bg='#E4D4D4' marginLeft={5} marginBottom={2}>?</Button>
+          </PopoverTrigger>
+          <PopoverContent width='760px' marginLeft={420} marginTop={5}>
+            <PopoverBody>
+              <HStack>
+                <GuidePart type='choose' />
+                <GuidePart type='drag' />
+                <GuidePart type='click' />
+              </HStack>
+            </PopoverBody>
+          </PopoverContent>
+        </Popover>
+        </Text>
       </VStack>
     </>
   )
