@@ -9,10 +9,11 @@ import { PiCubeBold } from 'react-icons/pi'
 
 interface Props {
   type: 'addRoom' | 'delete' | 'rotate' | 'save' | 'to2D' | 'to3D'
+  roomName?: string
   event: () => void
 }
 
-function IconButton ({ type, event }: Props): JSX.Element {
+function IconButton ({ type, roomName, event }: Props): JSX.Element {
   return (
     <>
       <Button
@@ -22,6 +23,7 @@ function IconButton ({ type, event }: Props): JSX.Element {
         rounded='full'
         bg={ type === 'delete' ? '#FF5D39' : type === 'rotate' ? '#55C1FE' : '#70D74C' }
         onClick={ event }
+        isDisabled = {roomName === ''}
       >
         { type === 'addRoom' ? <FaPlus size='25px'/> : type === 'delete' ? <FaRegTrashAlt size='25px'/> : type === 'rotate' ? <FaArrowRotateRight size='25px'/> : type === 'save' ? <IoIosSave size='25px'/> : type === 'to2D' ? <CgShapeSquare size='25px'/> : <PiCubeBold size='25px'/> }
         <Text marginLeft='13px' fontSize='20px'>
