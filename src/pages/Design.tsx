@@ -5,6 +5,7 @@ import BackButton from '../components/button/BackButton'
 import LogoutButton from '../components/button/LogoutButton'
 import RoomForm from '../components/RoomForm'
 import IconButton from '../components/button/IconButton'
+import UserInfo from '../components/display/UserInfo'
 import Guide from '../components/display/Guide'
 import DraggableImg from '../components/2D/DraggableImg'
 import type { furnitureType } from '../type/furnitureType'
@@ -98,6 +99,8 @@ function Design ({ handleSignout }: Props): JSX.Element {
           <IconButton type='delete' event={ () => { if (target !== -1) deleteFurniture() } }/>
           <IconButton type='save' event={ () => { console.log(name) } }/>
           <Box width='20px'/>
+          <UserInfo/>
+          <Box width='20px' />
           <LogoutButton handleSignout={handleSignout}/>
         </HStack>
         <HStack width='97%' marginTop='20px'>
