@@ -1,6 +1,5 @@
 import React from 'react'
 import { Flex, VStack, Center, Accordion, WrapItem } from '@chakra-ui/react'
-import UserInfo from './display/UserInfo'
 import Logo from './display/Logo'
 import FurnitureMenu from './FurnitureMenu'
 import furnitures from '../Data/furnitures.json'
@@ -24,7 +23,6 @@ function SideBar ({ addFurniture }: Props): JSX.Element {
           <Center paddingBottom='15px' marginBottom='10px' width='80%' height='140px' borderBottom='3px solid #FFFFFF'>
             <Logo size={150}/>
           </Center>
-          <UserInfo/>
           <Accordion allowToggle marginTop='10px' overflowY='scroll' sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
             {AccordionItems}
           </Accordion>
