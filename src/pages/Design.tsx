@@ -12,8 +12,9 @@ import type { furnitureType } from '../type/furnitureType'
 import Viewport3D from '../components/3D/Viewport3D'
 import { useToast } from '@chakra-ui/react'
 import { db } from '../hooks/firebase'
-import { doc, updateDoc } from 'firebase/firestore/lite'
+import { doc, updateDoc, getDoc } from 'firebase/firestore/lite'
 import { useParams } from 'react-router-dom'
+import type { roomType } from '../type/roomType'
 
 interface Props {
   handleSignout: () => void
@@ -21,13 +22,7 @@ interface Props {
 
 function Design ({ handleSignout }: Props): JSX.Element {
   const urlParams = useParams<string>()
-
-  // 未ログインのときはログイン画面に遷移
-  useEffect(() => {
-    if (localStorage.getItem('uid') === null) {
-      window.location.href = '/nologin'
-    }
-  }, [])
+  const toast = useToast()
 
   /* 部屋名 */
   const [name, setName] = useState<string>('')
@@ -37,10 +32,35 @@ function Design ({ handleSignout }: Props): JSX.Element {
   const [draggableImgs, setDraggableImgs] = useState<JSX.Element[]>([])
   const [target, setTarget] = useState<number>(0)
 
-  const toast = useToast()
+  /**
+   * 部屋データを取得する
+   */
+  const fetchRoomData = async (): Promise<void> => {
+    try {
+      const uid = localStorage.getItem('uid')
+      if (uid !== null) {
+        const docSnap = await getDoc(doc(db, uid, 'room_id_1'))
+        const data: roomType = docSnap.data() as roomType
+        setName(data.roomName)
+        setFurnitureList(data.furnitureList)
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  // 未ログインのときはログイン画面に遷移
+  useEffect(() => {
+    if (localStorage.getItem('uid') === null) {
+      window.location.href = '/nologin'
+    }
+    fetchRoomData().catch((error) => {
+      console.error(error)
+    })
+  }, [])
 
   /**
-   * レイアウトを保存する
+   * 配置された家具の情報をデータベースに保存する
    */
   const saveLayout = async (): Promise<void> => {
     const uid = localStorage.getItem('uid')
@@ -152,7 +172,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
           <Spacer />
           <VStack>
             <Center paddingLeft='40px' width='700px' height='50px'>
-              <RoomForm setName={setName} />
+              <RoomForm initialValue={name} setName={setName} />
             </Center>
             <Center width='700px' height='700px' bg='#ECECEC'>{draggableImgs}</Center>
           </VStack>
