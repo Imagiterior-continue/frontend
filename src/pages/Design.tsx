@@ -5,6 +5,7 @@ import BackButton from '../components/button/BackButton'
 import LogoutButton from '../components/button/LogoutButton'
 import RoomForm from '../components/RoomForm'
 import IconButton from '../components/button/IconButton'
+import UserInfo from '../components/display/UserInfo'
 import Guide from '../components/display/Guide'
 import DraggableImg from '../components/2D/DraggableImg'
 import type { furnitureType } from '../type/furnitureType'
@@ -138,12 +139,14 @@ function Design ({ handleSignout }: Props): JSX.Element {
       <SideBar addFurniture={addFurniture} />
       <VStack marginLeft='15%' marginTop='20px' width='85%' height='100%'>
         <HStack width='97%' height='50px'>
-          <BackButton />
-          <Spacer />
-          <IconButton type='delete' event={() => { if (target !== -1) deleteFurniture() }} />
-          <IconButton type='save' roomName = {name} event={saveLayout} />
+          <BackButton/>
+          <Spacer/>
+          <IconButton type='delete' event={ () => { if (target !== -1) deleteFurniture() } }/>
+          <IconButton type='save' roomName = {name} event={saveLayout} }/>
+          <Box width='20px'/>
+          <UserInfo/>
           <Box width='20px' />
-          <LogoutButton handleSignout={handleSignout} />
+          <LogoutButton handleSignout={handleSignout}/>
         </HStack>
         <HStack width='97%' marginTop='20px'>
           <Spacer />
