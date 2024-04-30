@@ -11,9 +11,6 @@ interface Props {
 }
 
 function List ({ handleSignout }: Props): JSX.Element {
-  // TODO: 部屋の表示ができるようになったら削除する
-  const tempURL = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhDl2-L1_SRV6R8sk3vPCGtO5vy8LEnpUSoaoEnCXBuItx89ag78Q3MxM6HtkUixlwiYw1cSK50-P0veLIMXpbT_w-wjcpxSeH7JDOe7r_oNeMe8bX_VsydNAj90vBr1Hm-PhR2V-UJ3O2pAkUmhU4d4mg_qMGlg5r7CmzKiZ_yJzQk24lR5acOGYVX6w/s845/pop_shinsyakaijin_murisuruna.png'
-
   // 取得した部屋の情報
   const [roomList, setRoomList] = useState<roomType[]>([])
 
@@ -49,7 +46,7 @@ function List ({ handleSignout }: Props): JSX.Element {
   const AllRooms: JSX.Element[] = roomList.map(({ roomName, furnitureList }: roomType, index: number) => {
     return (
       <WrapItem key={index}>
-        <RoomButton title={roomName} image={tempURL} type='green' onClick={() => { window.location.href = `/design/room_id_${index + 1}` }}/>
+        <RoomButton title={roomName} furnitureList={furnitureList} type='green' onClick={() => { window.location.href = `/design/room_id_${index + 1}` }}/>
       </WrapItem>
     )
   })
