@@ -10,7 +10,7 @@ import { PiCubeBold } from 'react-icons/pi'
 interface Props {
   type: 'addRoom' | 'delete' | 'rotate' | 'save' | 'to2D' | 'to3D'
   roomName?: string
-  event: () => void
+  event: any
 }
 
 function IconButton ({ type, roomName, event }: Props): JSX.Element {
