@@ -11,7 +11,7 @@ function Logo ({ size }: Props): JSX.Element {
       <Image
         boxSize={`${size}px`}
         objectFit='cover'
-        src='icon.png'
+        src='/icon.png'
       />
     </>
   )

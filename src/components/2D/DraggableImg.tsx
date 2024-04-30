@@ -41,7 +41,7 @@ function DraggableImg (props: Props): JSX.Element {
   return (
     <>
       <div style={{ ...interact.style }} ref={interact.ref} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
-        <img src={`image_2D/${props.fileName}_2D.png`} style={{ border: props.isEdited ? '4px solid #FF3333' : '0px solid #FF3333', transition: '.05s' }}/>
+        <img src={`/image_2D/${props.fileName}_2D.png`} style={{ border: props.isEdited ? '4px solid #FF3333' : '0px solid #FF3333', transition: '.05s' }}/>
       </div>
     </>
   )

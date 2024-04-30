@@ -12,12 +12,15 @@ import Viewport3D from '../components/3D/Viewport3D'
 import { useToast } from '@chakra-ui/react'
 import { db } from '../hooks/firebase'
 import { doc, updateDoc } from 'firebase/firestore/lite'
+import { useParams } from 'react-router-dom'
 
 interface Props {
   handleSignout: () => void
 }
 
 function Design ({ handleSignout }: Props): JSX.Element {
+  const urlParams = useParams<string>()
+
   // 未ログインのときはログイン画面に遷移
   useEffect(() => {
     if (localStorage.getItem('uid') === null) {
@@ -41,7 +44,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
   const saveLayout = async (): Promise<void> => {
     const uid = localStorage.getItem('uid')
     if (uid !== null) {
-      const updateRef = doc(db, uid, 'room_id_1')
+      const updateRef = doc(db, uid, urlParams.room_id ?? '')
       await updateDoc(updateRef, {
         roomName: name,
         furnitureList
