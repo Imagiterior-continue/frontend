@@ -5,13 +5,15 @@ import BackButton from '../components/button/BackButton'
 import LogoutButton from '../components/button/LogoutButton'
 import RoomForm from '../components/RoomForm'
 import IconButton from '../components/button/IconButton'
+import UserInfo from '../components/display/UserInfo'
 import Guide from '../components/display/Guide'
 import DraggableImg from '../components/2D/DraggableImg'
 import type { furnitureType } from '../type/furnitureType'
 import Viewport3D from '../components/3D/Viewport3D'
 import { useToast } from '@chakra-ui/react'
 import { db } from '../hooks/firebase'
-import { doc, getDoc } from 'firebase/firestore/lite'
+import { doc, updateDoc } from 'firebase/firestore/lite'
+import { useParams } from 'react-router-dom'
 import type { roomType } from '../type/roomType'
 
 interface Props {
@@ -19,6 +21,8 @@ interface Props {
 }
 
 function Design ({ handleSignout }: Props): JSX.Element {
+  const urlParams = useParams<string>()
+
   /* 部屋名 */
   const [name, setName] = useState<string>('')
 
@@ -55,31 +59,37 @@ function Design ({ handleSignout }: Props): JSX.Element {
     })
   }, [])
 
-  const saveLayout = (name: string): void => {
-    const flag = true
-
-    if (flag) {
-      console.log(`部屋名 ${name}を保存しました。`)
-      toast(
-        {
-          colorScheme: 'green',
-          title: '保存しました',
-          status: 'success',
-          duration: 6000,
-          isClosable: true,
-          position: 'top'
-        })
-    } else {
-      console.log(`部屋名 ${name}を保存できませんでした。`)
-      toast(
-        {
-          colorScheme: 'red',
-          title: '保存に失敗しました',
-          status: 'error',
-          duration: 6000,
-          isClosable: true,
-          position: 'top'
-        })
+  const saveLayout = async (): Promise<void> => {
+    const uid = localStorage.getItem('uid')
+    if (uid !== null) {
+      const updateRef = doc(db, uid, urlParams.room_id ?? '')
+      await updateDoc(updateRef, {
+        roomName: name,
+        furnitureList
+      }).then(() => {
+        toast(
+          {
+            colorScheme: 'green',
+            title: '保存しました',
+            status: 'success',
+            duration: 6000,
+            isClosable: true,
+            position: 'top'
+          }
+        )
+      }).catch((error) => {
+        console.error('エラーが発生しました: ', error)
+        toast(
+          {
+            colorScheme: 'red',
+            title: '保存に失敗しました',
+            status: 'error',
+            duration: 6000,
+            isClosable: true,
+            position: 'top'
+          }
+        )
+      })
     }
   }
 
@@ -146,12 +156,14 @@ function Design ({ handleSignout }: Props): JSX.Element {
       <SideBar addFurniture={addFurniture} />
       <VStack marginLeft='15%' marginTop='20px' width='85%' height='100%'>
         <HStack width='97%' height='50px'>
-          <BackButton />
-          <Spacer />
-          <IconButton type='delete' event={() => { if (target !== -1) deleteFurniture() }} />
-          <IconButton type='save' roomName = {name} event={() => { saveLayout(name) }} />
+          <BackButton/>
+          <Spacer/>
+          <IconButton type='delete' event={ () => { if (target !== -1) deleteFurniture() } }/>
+          <IconButton type='save' roomName = {name} event={() => { saveLayout().catch(e => { console.error(e) }) }}/>
+          <Box width='20px'/>
+          <UserInfo/>
           <Box width='20px' />
-          <LogoutButton handleSignout={handleSignout} />
+          <LogoutButton handleSignout={handleSignout}/>
         </HStack>
         <HStack width='97%' marginTop='20px'>
           <Spacer />
