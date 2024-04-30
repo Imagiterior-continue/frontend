@@ -1,63 +1,69 @@
 import React, { useEffect, useState } from 'react'
 import { VStack, HStack, Spacer, Text, WrapItem, Box, Wrap } from '@chakra-ui/layout'
-import { useDisclosure } from '@chakra-ui/hooks'
 import RoomButton from '../components/button/RoomButton'
 import LogoutButton from '../components/button/LogoutButton'
-import DeleteModal from '../components/modal/DeleteModal'
-import tempRoomList from '../Data/roomList.json'
+import type { roomType } from '../type/roomType'
+import { db } from '../hooks/firebase'
+import { getDoc, doc } from 'firebase/firestore/lite'
 
 interface Props {
   handleSignout: () => void
 }
 
-interface room_type {
-  name: string
-  image: string
-}
-
 function List ({ handleSignout }: Props): JSX.Element {
-  // 一覧表示画面かどうか（falseのときは削除画面）
-  const [isList, setIsList] = useState<boolean>(true)
+  // TODO: 部屋の表示ができるようになったら削除する
+  const tempURL = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhDl2-L1_SRV6R8sk3vPCGtO5vy8LEnpUSoaoEnCXBuItx89ag78Q3MxM6HtkUixlwiYw1cSK50-P0veLIMXpbT_w-wjcpxSeH7JDOe7r_oNeMe8bX_VsydNAj90vBr1Hm-PhR2V-UJ3O2pAkUmhU4d4mg_qMGlg5r7CmzKiZ_yJzQk24lR5acOGYVX6w/s845/pop_shinsyakaijin_murisuruna.png'
+
   // 取得した部屋の情報
-  const [roomList, setRoomList] = useState<any>([])
-  // 削除確認モーダル用
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [roomList, setRoomList] = useState<roomType[]>([])
+
+  /**
+   * 全ての部屋データを取得する
+   */
+  const fetchRoomList = async (): Promise<void> => {
+    try {
+      const uid: string = localStorage.getItem('uid') ?? ''
+      const tempList: roomType[] = []
+      for (let i = 1; i < 4; i++) {
+        const docSnap = await getDoc(doc(db, uid, `room_id_${i}`))
+        const data: roomType = docSnap.data() as roomType
+        tempList.push(data)
+      }
+      setRoomList(tempList)
+    } catch (e) {
+      console.error(e)
+    }
+  }
 
   // 未ログインのときはログイン画面に遷移
   useEffect(() => {
     if (localStorage.getItem('uid') === null) {
       window.location.href = '/nologin'
     }
-    // TODO: API接続出来たら消す
-    setRoomList(tempRoomList)
+    fetchRoomList().catch((error) => {
+      console.error(error)
+    })
   }, [])
 
   // TODO: APIで取得したユーザー情報の形式を確認した後、見直したい
-  const AllRooms: JSX.Element[] = roomList.map(({ name, image }: room_type, index: number) => {
+  const AllRooms: JSX.Element[] = roomList.map(({ roomName, furnitureList }: roomType, index: number) => {
     return (
       <WrapItem key={index}>
-        {isList ? <RoomButton title={name} image={image} type='green' onClick={() => { window.location.href = '/design' }}/> : <RoomButton title={name} image={image} type='red' onClick={onOpen}/>}
+        <RoomButton title={roomName} image={tempURL} type='green' onClick={() => { window.location.href = `/design/room_id_${index + 1}` }}/>
       </WrapItem>
     )
   })
 
   return (
     <>
-      <DeleteModal name={'削除する部屋名'} isOpen={isOpen} onClose={onClose}/>
       <VStack marginTop='10px' justify='center'>
         <HStack paddingRight='20px' w='100%' h='20px'>
           <Spacer/>
           <LogoutButton handleSignout={handleSignout}/>
         </HStack>
         <Text paddingY='30px' width='50%' fontSize='30px' textAlign='center' borderBottom='3px solid #999999'>
-          {isList ? `${localStorage.getItem('displayName')}さんの部屋一覧` : '削除する部屋を選択してください'}
+          {`${localStorage.getItem('displayName')}さんの部屋一覧`}
         </Text>
-        <HStack width='50%'>
-          <Spacer/>
-          <Text textAlign='right' color={isList ? '#FF3333' : '#70D74C'} cursor='pointer' transition='.2s' _hover={{ color: isList ? '#FF0000' : '#70D74C' }} onClick={() => { setIsList(!isList) }}>
-            {isList ? '部屋を削除する' : '部屋を編集する'}
-          </Text>
-        </HStack>
         <Box w='60%' marginTop='40px' marginBottom='40px'>
           <Wrap spacing='50px' justify='center'>
             {AllRooms}

@@ -30,20 +30,18 @@ function Design ({ handleSignout }: Props): JSX.Element {
   // 配置されている全ての家具の情報を保持する配列
   const [furnitureList, setFurnitureList] = useState<furnitureType[]>([])
   const [draggableImgs, setDraggableImgs] = useState<JSX.Element[]>([])
-  const [target, setTarget] = useState<number>(0)
+  const [target, setTarget] = useState<number>(-1)
 
   /**
    * 部屋データを取得する
    */
   const fetchRoomData = async (): Promise<void> => {
     try {
-      const uid = localStorage.getItem('uid')
-      if (uid !== null) {
-        const docSnap = await getDoc(doc(db, uid, 'room_id_1'))
-        const data: roomType = docSnap.data() as roomType
-        setName(data.roomName)
-        setFurnitureList(data.furnitureList)
-      }
+      const uid: string = localStorage.getItem('uid') ?? ''
+      const docSnap = await getDoc(doc(db, uid, urlParams.room_id ?? ''))
+      const data: roomType = docSnap.data() as roomType
+      setName(data.roomName)
+      setFurnitureList(data.furnitureList)
     } catch (e) {
       console.error(e)
     }
@@ -63,37 +61,35 @@ function Design ({ handleSignout }: Props): JSX.Element {
    * 配置された家具の情報をデータベースに保存する
    */
   const saveLayout = async (): Promise<void> => {
-    const uid = localStorage.getItem('uid')
-    if (uid !== null) {
-      const updateRef = doc(db, uid, urlParams.room_id ?? '')
-      await updateDoc(updateRef, {
-        roomName: name,
-        furnitureList
-      }).then(() => {
-        toast(
-          {
-            colorScheme: 'green',
-            title: '保存しました',
-            status: 'success',
-            duration: 6000,
-            isClosable: true,
-            position: 'top'
-          }
-        )
-      }).catch((error) => {
-        console.error('エラーが発生しました: ', error)
-        toast(
-          {
-            colorScheme: 'red',
-            title: '保存に失敗しました',
-            status: 'error',
-            duration: 6000,
-            isClosable: true,
-            position: 'top'
-          }
-        )
-      })
-    }
+    const uid: string = localStorage.getItem('uid') ?? ''
+    const updateRef = doc(db, uid, urlParams.room_id ?? '')
+    await updateDoc(updateRef, {
+      roomName: name,
+      furnitureList
+    }).then(() => {
+      toast(
+        {
+          colorScheme: 'green',
+          title: '保存しました',
+          status: 'success',
+          duration: 6000,
+          isClosable: true,
+          position: 'top'
+        }
+      )
+    }).catch((error) => {
+      console.error('エラーが発生しました: ', error)
+      toast(
+        {
+          colorScheme: 'red',
+          title: '保存に失敗しました',
+          status: 'error',
+          duration: 6000,
+          isClosable: true,
+          position: 'top'
+        }
+      )
+    })
   }
 
   /**
