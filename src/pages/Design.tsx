@@ -11,12 +11,17 @@ import DraggableImg from '../components/2D/DraggableImg'
 import type { furnitureType } from '../type/furnitureType'
 import Viewport3D from '../components/3D/Viewport3D'
 import { useToast } from '@chakra-ui/react'
+import { db } from '../hooks/firebase'
+import { doc, updateDoc } from 'firebase/firestore/lite'
+import { useParams } from 'react-router-dom'
 
 interface Props {
   handleSignout: () => void
 }
 
 function Design ({ handleSignout }: Props): JSX.Element {
+  const urlParams = useParams<string>()
+
   // 未ログインのときはログイン画面に遷移
   useEffect(() => {
     if (localStorage.getItem('uid') === null) {
@@ -34,31 +39,40 @@ function Design ({ handleSignout }: Props): JSX.Element {
 
   const toast = useToast()
 
-  const saveLayout = (name: string): void => {
-    const flag = true
-
-    if (flag) {
-      console.log(`部屋名 ${name}を保存しました。`)
-      toast(
-        {
-          colorScheme: 'green',
-          title: '保存しました',
-          status: 'success',
-          duration: 6000,
-          isClosable: true,
-          position: 'top'
-        })
-    } else {
-      console.log(`部屋名 ${name}を保存できませんでした。`)
-      toast(
-        {
-          colorScheme: 'red',
-          title: '保存に失敗しました',
-          status: 'error',
-          duration: 6000,
-          isClosable: true,
-          position: 'top'
-        })
+  /**
+   * レイアウトを保存する
+   */
+  const saveLayout = async (): Promise<void> => {
+    const uid = localStorage.getItem('uid')
+    if (uid !== null) {
+      const updateRef = doc(db, uid, urlParams.room_id ?? '')
+      await updateDoc(updateRef, {
+        roomName: name,
+        furnitureList
+      }).then(() => {
+        toast(
+          {
+            colorScheme: 'green',
+            title: '保存しました',
+            status: 'success',
+            duration: 6000,
+            isClosable: true,
+            position: 'top'
+          }
+        )
+      }).catch((error) => {
+        console.error('エラーが発生しました: ', error)
+        toast(
+          {
+            colorScheme: 'red',
+            title: '保存に失敗しました',
+            status: 'error',
+            duration: 6000,
+            isClosable: true,
+            position: 'top'
+          }
+        )
+      })
     }
   }
 
@@ -128,7 +142,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
           <BackButton/>
           <Spacer/>
           <IconButton type='delete' event={ () => { if (target !== -1) deleteFurniture() } }/>
-          <IconButton type='save' event={ () => { saveLayout(name) } }/>
+          <IconButton type='save' roomName = {name} event={() => { saveLayout().catch(e => { console.error(e) }) }}/>
           <Box width='20px'/>
           <UserInfo/>
           <Box width='20px' />
