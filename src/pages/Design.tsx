@@ -12,7 +12,7 @@ import type { furnitureType } from '../type/furnitureType'
 import Viewport3D from '../components/3D/Viewport3D'
 import { useToast } from '@chakra-ui/react'
 import { db } from '../hooks/firebase'
-import { doc, updateDoc } from 'firebase/firestore/lite'
+import { doc, updateDoc, getDoc } from 'firebase/firestore/lite'
 import { useParams } from 'react-router-dom'
 import type { roomType } from '../type/roomType'
 
@@ -22,6 +22,7 @@ interface Props {
 
 function Design ({ handleSignout }: Props): JSX.Element {
   const urlParams = useParams<string>()
+  const toast = useToast()
 
   /* 部屋名 */
   const [name, setName] = useState<string>('')
@@ -30,7 +31,6 @@ function Design ({ handleSignout }: Props): JSX.Element {
   const [furnitureList, setFurnitureList] = useState<furnitureType[]>([])
   const [draggableImgs, setDraggableImgs] = useState<JSX.Element[]>([])
   const [target, setTarget] = useState<number>(0)
-  const toast = useToast()
 
   /**
    * 部屋データを取得する
@@ -59,6 +59,9 @@ function Design ({ handleSignout }: Props): JSX.Element {
     })
   }, [])
 
+  /**
+   * 配置された家具の情報をデータベースに保存する
+   */
   const saveLayout = async (): Promise<void> => {
     const uid = localStorage.getItem('uid')
     if (uid !== null) {
