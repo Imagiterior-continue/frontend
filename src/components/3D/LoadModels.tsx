@@ -9,7 +9,7 @@ interface Props {
 }
 
 function LoadModels ({ url, position, rotation, ...props }: Props): JSX.Element {
-  const { scene } = useLoader(GLTFLoader, `models/${url}`)
+  const { scene } = useLoader(GLTFLoader, `/models/${url}`)
   const copiedScene = useMemo(() => scene.clone(), [scene])
 
   return (

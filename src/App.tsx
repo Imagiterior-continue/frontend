@@ -64,12 +64,12 @@ function App (): JSX.Element {
     <div className='App'>
       <ChakraProvider>
         <Routes>
-          <Route path='/' element={<Login handleSignIn={handleSignIn} />} />
-          <Route path='/list' element={<List handleSignout={handleSignOut} />} />
-          <Route path='/design' element={<Design handleSignout={handleSignOut} />} />
-          <Route path='/nologin' element={<NoLogin />} />
-          <Route path='*' element={<NoMatch />} />
-          <Route path='/sample' element={<Sample />} />
+          <Route path='/' element={<Login handleSignIn={handleSignIn}/>} />
+          <Route path='/list' element={<List handleSignout={handleSignOut}/>} />
+          <Route path='/design/:room_id' element={<Design handleSignout={handleSignOut}/>} />
+          <Route path='/nologin' element={<NoLogin/>}/>
+          <Route path='*' element={<NoMatch/>} />
+          <Route path='/sample' element={<Sample/>} />
         </Routes>
       </ChakraProvider>
     </div>

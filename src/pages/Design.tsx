@@ -5,23 +5,24 @@ import BackButton from '../components/button/BackButton'
 import LogoutButton from '../components/button/LogoutButton'
 import RoomForm from '../components/RoomForm'
 import IconButton from '../components/button/IconButton'
+import UserInfo from '../components/display/UserInfo'
 import Guide from '../components/display/Guide'
 import DraggableImg from '../components/2D/DraggableImg'
 import type { furnitureType } from '../type/furnitureType'
 import Viewport3D from '../components/3D/Viewport3D'
 import { useToast } from '@chakra-ui/react'
+import { db } from '../hooks/firebase'
+import { doc, updateDoc, getDoc } from 'firebase/firestore/lite'
+import { useParams } from 'react-router-dom'
+import type { roomType } from '../type/roomType'
 
 interface Props {
   handleSignout: () => void
 }
 
 function Design ({ handleSignout }: Props): JSX.Element {
-  // 未ログインのときはログイン画面に遷移
-  useEffect(() => {
-    if (localStorage.getItem('uid') === null) {
-      window.location.href = '/nologin'
-    }
-  }, [])
+  const urlParams = useParams<string>()
+  const toast = useToast()
 
   /* 部屋名 */
   const [name, setName] = useState<string>('')
@@ -29,15 +30,43 @@ function Design ({ handleSignout }: Props): JSX.Element {
   // 配置されている全ての家具の情報を保持する配列
   const [furnitureList, setFurnitureList] = useState<furnitureType[]>([])
   const [draggableImgs, setDraggableImgs] = useState<JSX.Element[]>([])
-  const [target, setTarget] = useState<number>(0)
+  const [target, setTarget] = useState<number>(-1)
 
-  const toast = useToast()
+  /**
+   * 部屋データを取得する
+   */
+  const fetchRoomData = async (): Promise<void> => {
+    try {
+      const uid: string = localStorage.getItem('uid') ?? ''
+      const docSnap = await getDoc(doc(db, uid, urlParams.room_id ?? ''))
+      const data: roomType = docSnap.data() as roomType
+      setName(data.roomName)
+      setFurnitureList(data.furnitureList)
+    } catch (e) {
+      console.error(e)
+    }
+  }
 
-  const saveLayout = (name: string): void => {
-    const flag = true
+  // 未ログインのときはログイン画面に遷移
+  useEffect(() => {
+    if (localStorage.getItem('uid') === null) {
+      window.location.href = '/nologin'
+    }
+    fetchRoomData().catch((error) => {
+      console.error(error)
+    })
+  }, [])
 
-    if (flag) {
-      console.log(`部屋名 ${name}を保存しました。`)
+  /**
+   * 配置された家具の情報をデータベースに保存する
+   */
+  const saveLayout = async (): Promise<void> => {
+    const uid: string = localStorage.getItem('uid') ?? ''
+    const updateRef = doc(db, uid, urlParams.room_id ?? '')
+    await updateDoc(updateRef, {
+      roomName: name,
+      furnitureList
+    }).then(() => {
       toast(
         {
           colorScheme: 'green',
@@ -46,9 +75,10 @@ function Design ({ handleSignout }: Props): JSX.Element {
           duration: 6000,
           isClosable: true,
           position: 'top'
-        })
-    } else {
-      console.log(`部屋名 ${name}を保存できませんでした。`)
+        }
+      )
+    }).catch((error) => {
+      console.error('エラーが発生しました: ', error)
       toast(
         {
           colorScheme: 'red',
@@ -57,8 +87,9 @@ function Design ({ handleSignout }: Props): JSX.Element {
           duration: 6000,
           isClosable: true,
           position: 'top'
-        })
-    }
+        }
+      )
+    })
   }
 
   /**
@@ -124,18 +155,20 @@ function Design ({ handleSignout }: Props): JSX.Element {
       <SideBar addFurniture={addFurniture} />
       <VStack marginLeft='15%' marginTop='20px' width='85%' height='100%'>
         <HStack width='97%' height='50px'>
-          <BackButton />
-          <Spacer />
-          <IconButton type='delete' event={() => { if (target !== -1) deleteFurniture() }} />
-          <IconButton type='save' roomName = {name} event={() => { saveLayout(name) }} />
+          <BackButton/>
+          <Spacer/>
+          <IconButton type='delete' event={ () => { if (target !== -1) deleteFurniture() } }/>
+          <IconButton type='save' roomName = {name} event={() => { saveLayout().catch(e => { console.error(e) }) }}/>
+          <Box width='20px'/>
+          <UserInfo/>
           <Box width='20px' />
-          <LogoutButton handleSignout={handleSignout} />
+          <LogoutButton handleSignout={handleSignout}/>
         </HStack>
         <HStack width='97%' marginTop='20px'>
           <Spacer />
           <VStack>
             <Center paddingLeft='40px' width='700px' height='50px'>
-              <RoomForm setName={setName} />
+              <RoomForm initialValue={name} setName={setName} />
             </Center>
             <Center width='700px' height='700px' bg='#ECECEC'>{draggableImgs}</Center>
           </VStack>
