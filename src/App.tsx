@@ -8,7 +8,7 @@ import Design from './pages/Design'
 import NoMatch from './pages/NoMatch'
 import NoLogin from './pages/NoLogin'
 import Sample from './pages/Sample'
-import { signInWithPopup, signOut } from 'firebase/auth'
+import { getAdditionalUserInfo, signInWithPopup, signOut } from 'firebase/auth'
 import { auth, googleProvider, db } from './hooks/firebase'
 import { doc, setDoc } from 'firebase/firestore/lite'
 
@@ -19,21 +19,29 @@ function App (): JSX.Element {
       // Googleログインポップアップを表示
       const result = await signInWithPopup(auth, googleProvider)
       const roomNum = 3
+      const additionalUserInfo = getAdditionalUserInfo(result)
 
       // ログイン成功時の処理
       localStorage.setItem('uid', result.user.uid)
       localStorage.setItem('displayName', result.user.displayName ?? '')
       localStorage.setItem('photoURL', result.user.photoURL ?? '')
 
-      // ユーザー情報の保存
-      for (let i = 0; i < roomNum; i++) {
-        await setDoc(doc(db, result.user.uid, `room_id_${i}`), {
-          furnitureList: [],
-          roomName: `部屋${i}`
-        })
-      }
+      if (additionalUserInfo !== null) { //  nullチェック
+        if (additionalUserInfo.isNewUser) {
+          // 新規ユーザーの場合、初期レイアウト情報を保存
+          for (let i = 0; i < roomNum; i++) {
+            await setDoc(doc(db, result.user.uid, `room_id_${i + 1}`), {
+              furnitureList: [],
+              roomName: `部屋${i + 1}`
+            })
+          }
+        }
 
-      window.location.href = '/list'
+        window.location.href = '/list'
+      } else {
+        // null時のエラーハンドリング
+        console.error('additionalUserInfo.isNewUserのnullエラー')
+      }
     } catch (error) {
       // エラーハンドリング
       console.error('ログインエラー', error)
