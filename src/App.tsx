@@ -18,6 +18,7 @@ function App (): JSX.Element {
     try {
       // Googleログインポップアップを表示
       const result = await signInWithPopup(auth, googleProvider)
+      const roomNum = 3
 
       // ログイン成功時の処理
       localStorage.setItem('uid', result.user.uid)
@@ -25,15 +26,12 @@ function App (): JSX.Element {
       localStorage.setItem('photoURL', result.user.photoURL ?? '')
 
       // ユーザー情報の保存
-      await setDoc(doc(db, result.user.uid, 'room_id_1'), {
-        furnitureList: []
-      })
-      await setDoc(doc(db, result.user.uid, 'room_id_2'), {
-        furnitureList: []
-      })
-      await setDoc(doc(db, result.user.uid, 'room_id_3'), {
-        furnitureList: []
-      })
+      for (let i = 0; i < roomNum; i++) {
+        await setDoc(doc(db, result.user.uid, `room_id_${i}`), {
+          furnitureList: [],
+          roomName: `部屋${i}`
+        })
+      }
 
       window.location.href = '/list'
     } catch (error) {
