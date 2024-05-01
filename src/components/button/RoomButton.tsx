@@ -1,20 +1,21 @@
 import React from 'react'
 import { VStack, Text } from '@chakra-ui/layout'
-import { Image } from '@chakra-ui/image'
+import type { furnitureType } from '../../type/furnitureType'
+import RoomImg from '../display/RoomImg'
 
 interface Props {
   title: string
-  image: any
+  furnitureList: furnitureType[]
   type: 'green' | 'red'
   onClick: () => void
 }
 
-function RoomInfo ({ title, image, type, onClick }: Props): JSX.Element {
+function RoomInfo ({ title, furnitureList, type, onClick }: Props): JSX.Element {
   return (
     <>
-      <VStack padding='10px' rounded='5px' bg={ type === 'green' ? '#C5E8BF' : '#E8BFBF' } _hover={{ bg: type === 'green' ? '#B6D8B0' : '#E2A3A3' }} transition='.2s' cursor='pointer' onClick={onClick}>
+      <VStack padding='10px' rounded='5px' bg={ type === 'green' ? '#C5E8BF' : '#E8BFBF' } _hover={{ shadow: '2xl' }} transition='.2s' cursor='pointer' onClick={onClick}>
         <Text fontSize='20px'>{ title }</Text>
-        <Image src={image} alt='floor plan' w='200px' h='200px'/>
+        <RoomImg furnitureList={furnitureList}/>
       </VStack>
     </>
   )
