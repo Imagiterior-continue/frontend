@@ -26,14 +26,15 @@ function GuidePart ({ type }: GuideType): JSX.Element {
 function Guide (): JSX.Element {
   return (
     <>
-      <VStack width='760px' height='110px'>
-        <Text width='100%' paddingBottom='7px' paddingLeft='10px' marginBottom='7px' borderBottom='3px solid #EEEEEE' textAlign='left' fontSize='20px'>操作方法
+      <VStack width='200px' height='110px'>
         <Popover>
           <PopoverTrigger>
-            <Button bg='#E4D4D4' marginLeft={5} marginBottom={2}>?</Button>
+            <Button bg='#E4D4D4'>?</Button>
           </PopoverTrigger>
           <PopoverContent width='760px' marginLeft={420} marginTop={5}>
             <PopoverBody>
+              <Text width='100%' paddingBottom='7px' paddingLeft='10px' marginBottom='7px' borderBottom='3px solid #EEEEEE' textAlign='left' fontSize='20px'>操作方法
+              </Text>
               <HStack>
                 <GuidePart type='choose' />
                 <GuidePart type='drag' />
@@ -42,7 +43,6 @@ function Guide (): JSX.Element {
             </PopoverBody>
           </PopoverContent>
         </Popover>
-        </Text>
       </VStack>
     </>
   )
