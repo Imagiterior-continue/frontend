@@ -1,5 +1,5 @@
 import React from 'react'
-import { OrbitControls, Environment, useEnvironment } from '@react-three/drei'
+import { OrbitControls, Environment, useEnvironment, PerspectiveCamera } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import LoadModels from './LoadModels'
 import type { furnitureType } from '../../type/furnitureType'
@@ -18,6 +18,7 @@ function Viewport3D ({ furnitureList }: Props): JSX.Element {
   return (
     <Canvas style={{ width: '700px', height: '700px' }}>
       <ambientLight />
+      <PerspectiveCamera makeDefault position={[0, 7, 5]} zoom={1.6} />
       <OrbitControls />
       {ModelList}
       <LoadModels url={'floor.gltf'} position={[0, -0.5, 0]} rotation={[0, 0, 0]}/>
