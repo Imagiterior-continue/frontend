@@ -57,10 +57,10 @@ function List ({ handleSignout }: Props): JSX.Element {
     <>
       <Header handleSignout={handleSignout} />
       <VStack marginTop='100px' justify='center'>
-        <Text paddingBottom='20px' width='50%' fontSize='30px' textAlign='center' borderBottomWidth='3px' borderColor={themeColor.main}>
+        <Text paddingBottom='20px' width='50%' fontSize='25px' textAlign='center' borderBottomWidth='3px' borderColor={themeColor.main}>
           {`${localStorage.getItem('displayName')}さんの部屋一覧`}
         </Text>
-        <Text marginBottom='50px' fontSize='20px' color='#4A4747'>編集する部屋を選択してください</Text>
+        <Text marginBottom='50px' fontSize='18px' color='#4A4747'>編集する部屋を選択してください</Text>
         <Box w='80%' marginBottom='40px'>
           <Wrap spacing='50px' justify='center'>
             {AllRooms.length === 0 ? <Spinner size='xl' borderWidth='4px' /> : AllRooms}

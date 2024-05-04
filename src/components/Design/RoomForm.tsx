@@ -10,8 +10,9 @@ function RoomForm ({ initialValue, setName }: Props): JSX.Element {
   return (
     <>
       <FormControl>
-        <FormLabel fontSize='15px' paddingTop='5px'>部屋名</FormLabel>
+        <FormLabel fontSize='14px' paddingTop='5px' lineHeight='14px'>部屋名</FormLabel>
         <Input
+          h='35px'
           type='text'
           bg='white'
           _hover={{ bg: '#EEEEEE' }}

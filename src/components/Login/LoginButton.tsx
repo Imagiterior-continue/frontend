@@ -10,9 +10,9 @@ interface Props {
 function LoginButton ({ handleSignIn }: Props): JSX.Element {
   return (
     <>
-      <Button padding='25px' bg={themeColor.accent} rounded='5px' _hover={{ bg: 'black' }} onClick={handleSignIn}>
+      <Button padding='23px' bg={themeColor.accent} rounded='5px' _hover={{ bg: 'black' }} onClick={handleSignIn}>
          <HStack align="center" spacing='30px'>
-          <FaGoogle size='30px' color='white' />
+          <FaGoogle size='25px' color='white' />
           <Text color='white' fontSize='18px' fontWeight='light' ml="2">Googleアカウントでログイン</Text>
         </HStack>
       </Button>

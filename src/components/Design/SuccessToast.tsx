@@ -5,9 +5,9 @@ import { FaCheckCircle } from 'react-icons/fa'
 function SuccessToast (): JSX.Element {
   return (
     <>
-      <HStack w='280px' bg='#309C82' paddingX='20px' paddingY='20px' rounded='3px' spacing='10px' >
-        <FaCheckCircle size='35px' color='white' />
-        <Text color='white' fontSize='20px'>保存に成功しました</Text>
+      <HStack w='250px' bg='#309C82' paddingX='20px' paddingY='15px' rounded='3px' spacing='20px' >
+        <FaCheckCircle size='30px' color='white' />
+        <Text color='white' fontSize='16px'>保存に成功しました</Text>
       </HStack>
     </>
   )

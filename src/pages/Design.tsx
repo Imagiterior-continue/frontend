@@ -15,6 +15,7 @@ import SelectingFurniture from '../components/Design/SelectingInfo'
 import SaveField from '../components/Design/SaveField'
 import SuccessToast from '../components/Design/SuccessToast'
 import ErrorToast from '../components/Design/ErrorToast'
+import { viewportSize } from '../Data/viewportSize'
 
 interface Props {
   handleSignout: () => void
@@ -142,7 +143,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
   useEffect(() => {
     const newDraggableImgs: JSX.Element[] = furnitureList.map((item, index) => {
       return (
-        <DraggableImg key={index} index={index} fileName={item.fileName} imageSize={item.imageSize} position={item.position} rotation={item.rotation} updateFurnitureList={updateFurnitureList} isEdited={index === target} />
+        <DraggableImg key={index} index={index} fileName={item.fileName} imageSize={item.imageSize} position={item.position} rotation={item.rotation} updateFurnitureList={updateFurnitureList} isEdited={index === target} viewportSize={viewportSize} />
       )
     })
     setDraggableImgs(newDraggableImgs)
@@ -151,19 +152,19 @@ function Design ({ handleSignout }: Props): JSX.Element {
   return (
     <>
       <Header handleSignout={handleSignout} />
-      <HStack spacing={0} w='100%' h='100vh' paddingTop='60px'>
+      <HStack spacing={0} w='100%' h='100vh' paddingTop='50px'>
         <SideBar addFurniture={addFurniture} />
-        <VStack width='100%' height='100%'>
-          <div style={{ width: '100%', marginTop: '10px' }}>
+        <VStack width='100%' height='100%' spacing='10px'>
+          <div style={{ width: '100%' }}>
             <Guide />
           </div>
-          <HStack w='100%' alignItems='start' paddingLeft='20px' paddingTop='20px' spacing='20px'>
+          <HStack w='100%' alignItems='start' paddingLeft='20px' spacing='20px'>
             <SelectingFurniture furniture={ target === -1 ? null : furnitureList[target] } onClick={ () => { if (target !== -1) deleteFurniture() } } />
             <SaveField roomName={name} setName={setName} saveLayout={() => { saveLayout().catch(e => { console.error(e) }) }} />
           </HStack>
           <div style={{ width: '100%' }}>
-          <HStack width='100%' marginTop='10px' paddingLeft='20px' spacing='20px'>
-            <Center width='700px' height='700px' bg='#FAFAFA'>{draggableImgs}</Center>
+          <HStack width='100%' paddingLeft='20px' spacing='20px'>
+            <Center boxSize={viewportSize} bg='#FAFAFA'>{draggableImgs}</Center>
             <Viewport3D furnitureList={furnitureList} />
           </HStack>
           </div>

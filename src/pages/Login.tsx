@@ -13,8 +13,8 @@ function Login ({ handleSignIn }: Props): JSX.Element {
     <Center h='100vh'>
       <VStack spacing='40px'>
         <HStack>
-          <Logo size={90} color='black'/>
-          <Text marginLeft='15px' color={themeColor.accent} fontSize='60px' fontWeight='bold' fontFamily='Playfair Display, serif'>Imagiterior</Text>
+          <Logo size={80} color='black'/>
+          <Text marginLeft='15px' color={themeColor.accent} fontSize='50px' fontWeight='bold' fontFamily='Playfair Display, serif'>Imagiterior</Text>
         </HStack>
         <LoginButton handleSignIn={handleSignIn}/>
         <Box height='200px'/>

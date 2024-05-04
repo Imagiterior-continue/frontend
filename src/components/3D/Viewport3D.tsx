@@ -3,6 +3,7 @@ import { OrbitControls, Environment } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import LoadModels from './LoadModels'
 import type { furnitureType } from '../../type/furnitureType'
+import { viewportSize } from '../../Data/viewportSize'
 
 interface Props {
   furnitureList: furnitureType[]
@@ -15,7 +16,7 @@ function Viewport3D ({ furnitureList }: Props): JSX.Element {
     )
   })
   return (
-    <Canvas style={{ width: '700px', height: '700px' }}>
+    <Canvas style={{ width: viewportSize, height: viewportSize }}>
         <OrbitControls />
         {ModelList}
         <LoadModels url={'floor.gltf'} position={[0, -0.5, 0]} rotation={[0, 0, 0]}/>

@@ -25,8 +25,8 @@ function FurnitureMenu ({ title, items, addFurniture }: Props): JSX.Element {
   return (
     <>
       <AccordionItem width='100%'>
-        <AccordionButton bg='#FFFFFF' _hover={{ background: '#EEEEEE' }}>
-          <Box as="span" flex='1' textAlign='left' fontSize='20px'>
+        <AccordionButton bg='#FFFFFF' h='40px' _hover={{ background: '#EEEEEE' }}>
+          <Box as="span" flex='1' textAlign='left' fontSize='18px' color='#555555'>
             {title}
           </Box>
           <AccordionIcon />

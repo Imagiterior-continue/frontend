@@ -19,7 +19,7 @@ function SideBar ({ addFurniture }: Props): JSX.Element {
   return (
     <>
       <VStack w='300px' h='100%' paddingBottom='10px' paddingX='2px' bg={themeColor.main} boxShadow='xl'>
-        <Text marginTop='15px' fontSize='20px'>家具一覧</Text>
+        <Text marginTop='15px' fontSize='18px'>家具一覧</Text>
         <Accordion width='100%' allowToggle overflowY='scroll' sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
           {AccordionItems}
         </Accordion>
