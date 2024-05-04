@@ -1,7 +1,8 @@
 import React from 'react'
-import { VStack, Text, Box } from '@chakra-ui/layout'
-import Logo from '../components/display/Logo'
-import LoginButton from '../components/button/LoginButton'
+import { Center, VStack, HStack, Text, Box } from '@chakra-ui/layout'
+import Logo from '../components/common/Logo'
+import LoginButton from '../components/Login/LoginButton'
+import { themeColor } from '../Data/color'
 
 interface Props {
   handleSignIn: () => void
@@ -9,14 +10,16 @@ interface Props {
 
 function Login ({ handleSignIn }: Props): JSX.Element {
   return (
-    <div>
-      <VStack spacing='10px' marginY={20}>
-        <Text fontSize='40px' fontWeight='bold'>Imagiterior</Text>
-        <Logo size={200}/>
-        <Box height='20px'/>
+    <Center h='100vh'>
+      <VStack spacing='40px'>
+        <HStack>
+          <Logo size={90} color='black'/>
+          <Text marginLeft='15px' color={themeColor.accent} fontSize='60px' fontWeight='bold' fontFamily='Playfair Display, serif'>Imagiterior</Text>
+        </HStack>
         <LoginButton handleSignIn={handleSignIn}/>
+        <Box height='200px'/>
       </VStack>
-    </div>
+    </Center>
   )
 }
 

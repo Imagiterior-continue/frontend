@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { VStack, HStack, Spacer, Center, Box } from '@chakra-ui/layout'
-import SideBar from '../components/SideBar'
-import BackButton from '../components/button/BackButton'
-import LogoutButton from '../components/button/LogoutButton'
-import RoomForm from '../components/RoomForm'
-import IconButton from '../components/button/IconButton'
-import UserInfo from '../components/display/UserInfo'
-import Guide from '../components/display/Guide'
+import { VStack, HStack, Center } from '@chakra-ui/layout'
+import SideBar from '../components/Design/SideBar'
+import Guide from '../components/Design/Guide'
 import DraggableImg from '../components/2D/DraggableImg'
 import type { furnitureType } from '../type/furnitureType'
 import Viewport3D from '../components/3D/Viewport3D'
@@ -15,6 +10,9 @@ import { db } from '../hooks/firebase'
 import { doc, updateDoc, getDoc } from 'firebase/firestore/lite'
 import { useParams } from 'react-router-dom'
 import type { roomType } from '../type/roomType'
+import Header from '../components/common/Header'
+import SelectingFurniture from '../components/Design/SelectingInfo'
+import SaveField from '../components/Design/SaveField'
 
 interface Props {
   handleSignout: () => void
@@ -51,6 +49,9 @@ function Design ({ handleSignout }: Props): JSX.Element {
   useEffect(() => {
     if (localStorage.getItem('uid') === null) {
       window.location.href = '/nologin'
+    }
+    if (urlParams.room_id !== 'room_id_1' && urlParams.room_id !== 'room_id_2' && urlParams.room_id !== 'room_id_3') {
+      window.location.href = '/nomatch'
     }
     fetchRoomData().catch((error) => {
       console.error(error)
@@ -97,10 +98,11 @@ function Design ({ handleSignout }: Props): JSX.Element {
    * @param newFileName 追加する家具の名前
    * @param newImageSize 追加する家具の画像サイズ
    */
-  const addFurniture: (newFileName: string, newImageSize: number[]) => void = (newFileName: string, newImageSize: number[]) => {
+  const addFurniture: (newFileName: string, newName: string, newImageSize: number[]) => void = (newFileName, newName, newImageSize) => {
     setFurnitureList((prev) => {
       const newFurniture: furnitureType = {
         fileName: newFileName,
+        name: newName,
         position: [0, -0.5, 0],
         rotation: 0,
         size: [1, 1, 1],
@@ -152,37 +154,27 @@ function Design ({ handleSignout }: Props): JSX.Element {
 
   return (
     <>
-      <SideBar addFurniture={addFurniture} />
-      <VStack marginLeft='15%' marginTop='20px' width='85%' height='100%'>
-        <HStack width='97%' height='50px'>
-          <BackButton/>
-          <Spacer/>
-          <IconButton type='delete' event={ () => { if (target !== -1) deleteFurniture() } }/>
-          <IconButton type='save' roomName = {name} event={() => { saveLayout().catch(e => { console.error(e) }) }}/>
-          <Box width='20px'/>
-          <UserInfo/>
-          <Box width='20px' />
-          <LogoutButton handleSignout={handleSignout}/>
-        </HStack>
-        <HStack width='97%' marginTop='20px'>
-          <Spacer />
-          <VStack>
-            <Center paddingLeft='40px' width='700px' height='50px'>
-              <RoomForm initialValue={name} setName={setName} />
-            </Center>
+      <Header handleSignout={handleSignout} />
+      <HStack spacing={0} w='100%' h='100vh' paddingTop='60px'>
+        <SideBar addFurniture={addFurniture} />
+        <VStack width='100%' height='100%'>
+          <div style={{ width: '100%', marginTop: '10px' }}>
+            <Guide />
+          </div>
+          <HStack w='100%' alignItems='start' paddingLeft='20px' paddingTop='20px' spacing='20px'>
+            <SelectingFurniture furniture={ target === -1 ? null : furnitureList[target] } onClick={ () => { if (target !== -1) deleteFurniture() } } />
+            <SaveField roomName={name} setName={setName} saveLayout={() => { saveLayout().catch(e => { console.error(e) }) }} />
+          </HStack>
+          <div style={{ width: '100%' }}>
+          <HStack width='100%' marginTop='10px' paddingLeft='20px' spacing='20px'>
             <Center width='700px' height='700px' bg='#ECECEC'>{draggableImgs}</Center>
-          </VStack>
-          <Spacer />
-          <VStack>
-            <HStack width='700px' height='50px' />
             <Viewport3D furnitureList={furnitureList} />
-          </VStack>
-          <Spacer />
-        </HStack>
-        <HStack width='97%'>
-          <Guide />
-        </HStack>
-      </VStack>
+          </HStack>
+          </div>
+          <HStack width='97%'>
+          </HStack>
+        </VStack>
+      </HStack>
     </>
   )
 }

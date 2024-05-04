@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { VStack, HStack, Spacer, Text, WrapItem, Box, Wrap } from '@chakra-ui/layout'
-import RoomButton from '../components/button/RoomButton'
-import LogoutButton from '../components/button/LogoutButton'
+import { VStack, Text, WrapItem, Box, Wrap } from '@chakra-ui/layout'
+import RoomButton from '../components/List/RoomButton'
 import type { roomType } from '../type/roomType'
 import { db } from '../hooks/firebase'
 import { getDoc, doc } from 'firebase/firestore/lite'
+import Header from '../components/common/Header'
+import { themeColor } from '../Data/color'
 
 interface Props {
   handleSignout: () => void
@@ -46,22 +47,20 @@ function List ({ handleSignout }: Props): JSX.Element {
   const AllRooms: JSX.Element[] = roomList.map(({ roomName, furnitureList }: roomType, index: number) => {
     return (
       <WrapItem key={index}>
-        <RoomButton title={roomName} furnitureList={furnitureList} type='green' onClick={() => { window.location.href = `/design/room_id_${index + 1}` }}/>
+        <RoomButton title={roomName} furnitureList={furnitureList} onClick={() => { window.location.href = `/design/room_id_${index + 1}` }}/>
       </WrapItem>
     )
   })
 
   return (
     <>
-      <VStack marginTop='10px' justify='center'>
-        <HStack paddingRight='20px' w='100%' h='20px'>
-          <Spacer/>
-          <LogoutButton handleSignout={handleSignout}/>
-        </HStack>
-        <Text paddingY='30px' width='50%' fontSize='30px' textAlign='center' borderBottom='3px solid #999999'>
+      <Header handleSignout={handleSignout} />
+      <VStack marginTop='100px' justify='center'>
+        <Text paddingBottom='20px' width='50%' fontSize='30px' textAlign='center' borderBottomWidth='3px' borderColor={themeColor.main}>
           {`${localStorage.getItem('displayName')}さんの部屋一覧`}
         </Text>
-        <Box w='60%' marginTop='40px' marginBottom='40px'>
+        <Text marginBottom='50px' fontSize='20px' color='#4A4747'>編集する部屋を選択してください</Text>
+        <Box w='60%' marginBottom='40px'>
           <Wrap spacing='50px' justify='center'>
             {AllRooms}
           </Wrap>
