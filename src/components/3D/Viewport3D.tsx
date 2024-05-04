@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React from 'react'
 import { OrbitControls, Environment } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import LoadModels from './LoadModels'
@@ -16,14 +16,12 @@ function Viewport3D ({ furnitureList }: Props): JSX.Element {
   })
   return (
     <Canvas style={{ width: '700px', height: '700px' }}>
-      <Suspense fallback={null} >
         <OrbitControls />
         {ModelList}
         <LoadModels url={'floor.gltf'} position={[0, -0.5, 0]} rotation={[0, 0, 0]}/>
         { /* eslint-disable-next-line */ }
         <pointLight position={[10, 10, 10]} />
         <Environment preset='sunset' blur={0.7} background />
-      </Suspense>
     </Canvas>
   )
 }

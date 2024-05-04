@@ -1,24 +1,8 @@
 import React from 'react'
-import { Text, Spacer, Box } from '@chakra-ui/layout'
-import { Popover, PopoverTrigger, PopoverContent, PopoverBody, OrderedList, ListItem } from '@chakra-ui/react'
+import { Text, Box } from '@chakra-ui/layout'
+import { Popover, PopoverTrigger, PopoverContent, Image } from '@chakra-ui/react'
 import { Button } from '@chakra-ui/button'
 import { FaQuestion } from 'react-icons/fa6'
-
-interface GuideType {
-  text: string
-}
-
-function GuidePart ({ text }: GuideType): JSX.Element {
-  return (
-    <>
-      <ListItem>
-        <Spacer/>
-        <Text textAlign='left' fontSize='20px'>{text}</Text>
-        <Spacer/>
-      </ListItem>
-    </>
-  )
-}
 
 function Guide (): JSX.Element {
   return (
@@ -32,14 +16,8 @@ function Guide (): JSX.Element {
             <Text marginLeft='10px' fontSize='18px' transition='.1s' _hover={{ color: '#555555' }}>使い方を見る</Text>
           </Button>
         </PopoverTrigger>
-        <PopoverContent width='760px' marginLeft={420} marginTop={5}>
-          <PopoverBody>
-            <OrderedList>
-              <GuidePart text='家具をクリックして配置' />
-              <GuidePart text='ドラッグで移動・クリックで回転' />
-              <GuidePart text='名前を入力して保存' />
-            </OrderedList>
-          </PopoverBody>
+        <PopoverContent width='760px' margin='20px' rounded='5px' boxShadow='0px 0px 100px #555555' border='10px solid white' >
+          <Image src='/guide/guide.png' objectFit='cover' />
         </PopoverContent>
       </Popover>
     </>

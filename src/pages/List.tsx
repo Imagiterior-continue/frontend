@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { VStack, Text, WrapItem, Box, Wrap } from '@chakra-ui/layout'
+import { Spinner } from '@chakra-ui/react'
 import RoomButton from '../components/List/RoomButton'
 import type { roomType } from '../type/roomType'
 import { db } from '../hooks/firebase'
@@ -60,9 +61,9 @@ function List ({ handleSignout }: Props): JSX.Element {
           {`${localStorage.getItem('displayName')}さんの部屋一覧`}
         </Text>
         <Text marginBottom='50px' fontSize='20px' color='#4A4747'>編集する部屋を選択してください</Text>
-        <Box w='60%' marginBottom='40px'>
+        <Box w='80%' marginBottom='40px'>
           <Wrap spacing='50px' justify='center'>
-            {AllRooms}
+            {AllRooms.length === 0 ? <Spinner size='xl' borderWidth='4px' /> : AllRooms}
           </Wrap>
         </Box>
       </VStack>
