@@ -1,7 +1,6 @@
 import React from 'react'
 import { VStack, Text, Button } from '@chakra-ui/react'
 import RoomForm from './RoomForm'
-import { IoIosSave } from 'react-icons/io'
 import { themeColor } from '../../Data/color'
 
 interface Props {
@@ -18,8 +17,7 @@ function SaveField ({ roomName, setName, saveLayout }: Props): JSX.Element {
       </div>
       <VStack w='330px' h='150px' bg={themeColor.main} rounded='5px' paddingX='5px'>
         <RoomForm initialValue={roomName} setName={setName} />
-        <Button h='35px' bg='#24E75A' _hover={{ bg: '#2FCE6F' }} marginTop='10px' rounded='5px' color='black' isDisabled={roomName === ''} onClick={saveLayout}>
-          <IoIosSave size='23px' style={{ marginRight: '7px' }} />
+        <Button h='35px' w='70px' bg='#2B6B7A' _hover={{ bg: '#1F5461' }} marginTop='10px' rounded='5px' color={themeColor.accentString} isDisabled={roomName === ''} onClick={saveLayout}>
           保存
         </Button>
       </VStack>

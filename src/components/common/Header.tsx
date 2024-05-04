@@ -15,7 +15,7 @@ interface Props {
 function Header ({ handleSignout }: Props): JSX.Element {
   return (
     <>
-      <HStack bg={themeColor.accent} w='100%' h='60px' paddingX='15px' position='fixed' top='0' left='0' zIndex={10000}>
+      <HStack bg={themeColor.accent} w='100%' h='60px' paddingX='15px' position='fixed' top='0' left='0' zIndex={10}>
         <Logo size={40} color='white'/>
         <Text fontFamily='Playfair Display, serif' marginLeft='10px' fontSize='30px' color='white'>Imagiterior</Text>
         <Spacer />

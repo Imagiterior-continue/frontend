@@ -13,6 +13,8 @@ import type { roomType } from '../type/roomType'
 import Header from '../components/common/Header'
 import SelectingFurniture from '../components/Design/SelectingInfo'
 import SaveField from '../components/Design/SaveField'
+import SuccessToast from '../components/Design/SuccessToast'
+import ErrorToast from '../components/Design/ErrorToast'
 
 interface Props {
   handleSignout: () => void
@@ -70,24 +72,18 @@ function Design ({ handleSignout }: Props): JSX.Element {
     }).then(() => {
       toast(
         {
-          colorScheme: 'green',
-          title: '保存しました',
-          status: 'success',
-          duration: 6000,
-          isClosable: true,
-          position: 'top'
+          duration: 4000,
+          position: 'top',
+          render: () => (<SuccessToast />)
         }
       )
     }).catch((error) => {
       console.error('エラーが発生しました: ', error)
       toast(
         {
-          colorScheme: 'red',
-          title: '保存に失敗しました',
-          status: 'error',
-          duration: 6000,
-          isClosable: true,
-          position: 'top'
+          duration: 4000,
+          position: 'top',
+          render: () => (<ErrorToast />)
         }
       )
     })
@@ -167,7 +163,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
           </HStack>
           <div style={{ width: '100%' }}>
           <HStack width='100%' marginTop='10px' paddingLeft='20px' spacing='20px'>
-            <Center width='700px' height='700px' bg='#ECECEC'>{draggableImgs}</Center>
+            <Center width='700px' height='700px' bg='#FAFAFA'>{draggableImgs}</Center>
             <Viewport3D furnitureList={furnitureList} />
           </HStack>
           </div>
