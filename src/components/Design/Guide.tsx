@@ -9,14 +9,14 @@ function Guide (): JSX.Element {
     <>
       <Popover>
         <PopoverTrigger>
-          <Button h='40px' bg='rgba(0, 0, 0, 0)' _hover={{ bg: 'rgba(0, 0, 0, 0)' }} >
+          <Button h='30px' bg='rgba(0, 0, 0, 0)' _hover={{ bg: 'rgba(0, 0, 0, 0)' }} >
             <Box border='2px solid #000000' bg='white' rounded='full' padding='3px'>
               <FaQuestion size='15px' color='#000000' />
             </Box>
             <Text marginLeft='10px' fontSize='14px' transition='.1s' _hover={{ color: '#555555' }}>使い方を見る</Text>
           </Button>
         </PopoverTrigger>
-        <PopoverContent width='600px' margin='20px' rounded='5px' boxShadow='0px 0px 100px #555555' border='10px solid white' >
+        <PopoverContent width={{ base: '350px', md: '430px', lg: '650px' }} margin='20px' rounded='5px' boxShadow='0px 0px 100px #555555' border='10px solid white' >
           <Image src='/guide/guide.png' objectFit='cover' />
         </PopoverContent>
       </Popover>

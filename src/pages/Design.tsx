@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { VStack, HStack, Center } from '@chakra-ui/layout'
+import { VStack, HStack, Center, Wrap, Box } from '@chakra-ui/layout'
 import SideBar from '../components/Design/SideBar'
 import Guide from '../components/Design/Guide'
 import DraggableImg from '../components/2D/DraggableImg'
 import type { furnitureType } from '../type/furnitureType'
 import Viewport3D from '../components/3D/Viewport3D'
-import { useToast } from '@chakra-ui/react'
+import { useToast, useBreakpointValue, Spacer } from '@chakra-ui/react'
 import { db } from '../hooks/firebase'
 import { doc, updateDoc, getDoc } from 'firebase/firestore/lite'
 import { useParams } from 'react-router-dom'
@@ -15,7 +15,6 @@ import SelectingFurniture from '../components/Design/SelectingInfo'
 import SaveField from '../components/Design/SaveField'
 import SuccessToast from '../components/Design/SuccessToast'
 import ErrorToast from '../components/Design/ErrorToast'
-import { viewportSize } from '../Data/viewportSize'
 
 interface Props {
   handleSignout: () => void
@@ -24,6 +23,8 @@ interface Props {
 function Design ({ handleSignout }: Props): JSX.Element {
   const urlParams = useParams<string>()
   const toast = useToast()
+  const breakpoint = useBreakpointValue({ base: 'base', sm: 'sm', md: 'md', lg: 'lg', xl: 'xl' })
+  const viewportSize: number = breakpoint === 'base' ? 350 : breakpoint === 'sm' ? 450 : 550
 
   /* 部屋名 */
   const [name, setName] = useState<string>('')
@@ -153,20 +154,24 @@ function Design ({ handleSignout }: Props): JSX.Element {
     <>
       <Header handleSignout={handleSignout} />
       <HStack spacing={0} w='100%' h='100vh' paddingTop='50px'>
-        <SideBar addFurniture={addFurniture} />
+        <Box display={{ base: 'none', '2xl': 'block' }} h='100%'>
+          <SideBar addFurniture={addFurniture} />
+        </Box>
         <VStack width='100%' height='100%' spacing='10px'>
-          <div style={{ width: '100%' }}>
-            <Guide />
-          </div>
-          <HStack w='100%' alignItems='start' paddingLeft='20px' spacing='20px'>
+          <HStack w='100%' alignItems='start' paddingTop='10px' paddingLeft='20px' spacing='20px'>
+            <Box display={{ base: 'block', '2xl': 'none' }}>
+              <SideBar addFurniture={addFurniture} />
+            </Box>
             <SelectingFurniture furniture={ target === -1 ? null : furnitureList[target] } onClick={ () => { if (target !== -1) deleteFurniture() } } />
             <SaveField roomName={name} setName={setName} saveLayout={() => { saveLayout().catch(e => { console.error(e) }) }} />
+            <Spacer />
+            <Guide />
           </HStack>
           <div style={{ width: '100%' }}>
-          <HStack width='100%' paddingLeft='20px' spacing='20px'>
-            <Center boxSize={viewportSize} bg='#FAFAFA'>{draggableImgs}</Center>
-            <Viewport3D furnitureList={furnitureList} />
-          </HStack>
+          <Wrap flexWrap='wrap' width='100%' paddingLeft='20px' spacing='20px' >
+            <Center boxSize={`${viewportSize}px`} bg='#FAFAFA'>{draggableImgs}</Center>
+            <Viewport3D furnitureList={furnitureList} boxSize={viewportSize} />
+          </Wrap>
           </div>
           <HStack width='97%'>
           </HStack>

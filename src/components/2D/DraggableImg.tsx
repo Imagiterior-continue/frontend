@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useInteractJS } from '../../hooks/useInteractJS'
-import { viewportSize } from '../../Data/viewportSize'
 
 interface Props {
   index: number
@@ -14,7 +13,7 @@ interface Props {
 }
 
 function DraggableImg (props: Props): JSX.Element {
-  const interact = useInteractJS({ width: props.imageSize[props.rotation % 180 === 0 ? 0 : 1] * viewportSize / 700, height: props.imageSize[props.rotation % 180 === 0 ? 1 : 0] * viewportSize / 700, x: props.position[0] * props.viewportSize / 3.6, y: props.position[2] * viewportSize / 3.6, rotation: props.rotation, viewportSize: props.viewportSize })
+  const interact = useInteractJS({ width: props.imageSize[props.rotation % 180 === 0 ? 0 : 1] * props.viewportSize / 700, height: props.imageSize[props.rotation % 180 === 0 ? 1 : 0] * props.viewportSize / 700, x: props.position[0] * props.viewportSize / 3.6, y: props.position[2] * props.viewportSize / 3.6, rotation: props.rotation, viewportSize: props.viewportSize })
 
   // インデックス
   const [index, setIndex] = useState<number>(0)

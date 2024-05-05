@@ -1,5 +1,5 @@
 import React from 'react'
-import { HStack, VStack, Text, Button, Spacer } from '@chakra-ui/react'
+import { HStack, VStack, Text, Button, Spacer, Box, Popover, PopoverTrigger, PopoverContent } from '@chakra-ui/react'
 import { Image } from '@chakra-ui/image'
 import { FaRegTrashAlt } from 'react-icons/fa'
 import type { furnitureType } from '../../type/furnitureType'
@@ -10,7 +10,7 @@ interface Props {
   onClick: () => void
 }
 
-function SelectingFurniture ({ furniture, onClick }: Props): JSX.Element {
+function Content ({ furniture, onClick }: Props): JSX.Element {
   return (
     <VStack w='280px' h='150px'>
       <Text w='100%' paddingLeft='10px' fontSize='16px' borderLeft={`7px solid ${themeColor.accent}`}>選択中の家具</Text>
@@ -33,6 +33,26 @@ function SelectingFurniture ({ furniture, onClick }: Props): JSX.Element {
         }
       </HStack>
     </VStack>
+  )
+}
+
+function SelectingFurniture ({ furniture, onClick }: Props): JSX.Element {
+  return (
+    <>
+      <Box display={{ base: 'none', '2xl': 'block' }}>
+        <Content furniture={furniture} onClick={onClick}/>
+      </Box>
+      <Popover>
+        <PopoverTrigger>
+            <Button display={{ base: 'block', '2xl': 'none' }} bg={themeColor.accent} _hover={{ bg: themeColor.accent }} boxSize='50px' padding='5px' rounded='5px' boxShadow='xl'>
+              <FaRegTrashAlt size='40px' color={themeColor.accentString}/>
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent display={{ base: 'block', '2xl': 'none' }} padding='10px' boxShadow='xl'>
+            <Content furniture={furniture} onClick={onClick}/>
+          </PopoverContent>
+      </Popover>
+    </>
   )
 }
 

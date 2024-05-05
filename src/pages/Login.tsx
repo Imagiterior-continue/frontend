@@ -14,7 +14,7 @@ function Login ({ handleSignIn }: Props): JSX.Element {
       <VStack spacing='40px'>
         <HStack>
           <Logo size={80} color='black'/>
-          <Text marginLeft='15px' color={themeColor.accent} fontSize='50px' fontWeight='bold' fontFamily='Playfair Display, serif'>Imagiterior</Text>
+          <Text marginLeft='15px' color={themeColor.accent} fontSize={{ base: '40px', sm: '50px' }} fontWeight='bold' fontFamily='Playfair Display, serif'>Imagiterior</Text>
         </HStack>
         <LoginButton handleSignIn={handleSignIn}/>
         <Box height='200px'/>

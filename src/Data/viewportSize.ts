@@ -1,1 +1,1 @@
-export const viewportSize = 600
+export const viewportSize = 500
