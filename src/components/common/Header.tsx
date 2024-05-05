@@ -15,11 +15,11 @@ interface Props {
 function Header ({ handleSignout }: Props): JSX.Element {
   return (
     <>
-      <HStack bg={themeColor.accent} w='100%' h='50px' paddingX='15px' position='fixed' top='0' left='0' zIndex={10}>
+      <HStack bg={themeColor.accent} w='100%' h='50px' paddingX={{ base: '5px', sm: '15px' }} position='fixed' top='0' left='0' zIndex={10}>
         <Box display={{ base: 'none', sm: 'block' }}>
           <Logo size={35} color='white'/>
         </Box>
-        <Text fontFamily='Playfair Display, serif' marginLeft='10px' fontSize={{ base: '20px', sm: '25px' }} color='white'>Imagiterior</Text>
+        <Text fontFamily='Playfair Display, serif' marginLeft='10px' fontSize={{ base: '25px', sm: '25px' }} color='white'>Imagiterior</Text>
         <Spacer />
         <UserInfo/>
         <IconLink link='/list' icon={<TiThSmall color={themeColor.accentString} size='22px'/>} text='部屋一覧'/>

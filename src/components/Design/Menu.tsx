@@ -3,13 +3,13 @@ import { VStack, Accordion, WrapItem, Text, Popover, PopoverTrigger, PopoverCont
 import FurnitureMenu from './FurnitureMenu'
 import furnitures from '../../Data/furnitures.json'
 import { themeColor } from '../../Data/color'
-import { RxHamburgerMenu } from 'react-icons/rx'
+import { MdOutlineAddCircleOutline } from 'react-icons/md'
 
 interface Props {
   addFurniture: (newFileName: string, newName: string, newImageSize: number[]) => void
 }
 
-function SideBar ({ addFurniture }: Props): JSX.Element {
+function Menu ({ addFurniture }: Props): JSX.Element {
   const AccordionItems: JSX.Element[] = furnitures.map(({ category, items }: any, index: number) => {
     return (
       <WrapItem key={index}>
@@ -27,11 +27,11 @@ function SideBar ({ addFurniture }: Props): JSX.Element {
       </VStack>
       <Popover>
         <PopoverTrigger>
-          <Button display={{ base: 'block', '2xl': 'none' }} bg={themeColor.accent} _hover={{ bg: themeColor.accent }} boxSize='50px' padding='5px' rounded='5px' boxShadow='xl'>
-            <RxHamburgerMenu size='40px' color={themeColor.accentString}/>
+          <Button display={{ base: 'block', '2xl': 'none' }} bg={themeColor.main} _hover={{ bg: themeColor.main }} boxSize='40px' padding='3px' rounded='3px' boxShadow='xl'>
+            <MdOutlineAddCircleOutline size='34px' color={themeColor.accentString}/>
           </Button>
         </PopoverTrigger>
-        <PopoverContent display={{ base: 'block', '2xl': 'none' }} padding='10px' boxShadow='xl'>
+        <PopoverContent display={{ base: 'block', '2xl': 'none' }} padding='10px' rounded='3px' boxShadow='xl'>
           <Accordion width='100%' allowToggle overflowY='scroll' sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
             {AccordionItems}
           </Accordion>
@@ -41,4 +41,4 @@ function SideBar ({ addFurniture }: Props): JSX.Element {
   )
 }
 
-export default SideBar
+export default Menu

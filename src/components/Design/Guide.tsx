@@ -16,7 +16,7 @@ function Guide (): JSX.Element {
             <Text marginLeft='10px' fontSize='14px' transition='.1s' _hover={{ color: '#555555' }}>使い方を見る</Text>
           </Button>
         </PopoverTrigger>
-        <PopoverContent width={{ base: '350px', md: '430px', lg: '650px' }} margin='20px' rounded='5px' boxShadow='0px 0px 100px #555555' border='10px solid white' >
+        <PopoverContent width={{ base: '350px', md: '430px', lg: '650px' }} margin='20px' rounded='3px' boxShadow='0px 0px 100px #555555' border='10px solid white' >
           <Image src='/guide/guide.png' objectFit='cover' />
         </PopoverContent>
       </Popover>

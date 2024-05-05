@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { VStack, HStack, Center, Wrap, Box } from '@chakra-ui/layout'
-import SideBar from '../components/Design/SideBar'
+import Menu from '../components/Design/Menu'
 import Guide from '../components/Design/Guide'
 import DraggableImg from '../components/2D/DraggableImg'
 import type { furnitureType } from '../type/furnitureType'
@@ -49,6 +49,10 @@ function Design ({ handleSignout }: Props): JSX.Element {
     }
   }
 
+  // function noscroll (e: Event): void {
+  //   e.preventDefault()
+  // }
+
   // 未ログインのときはログイン画面に遷移
   useEffect(() => {
     if (localStorage.getItem('uid') === null) {
@@ -60,6 +64,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
     fetchRoomData().catch((error) => {
       console.error(error)
     })
+    // window.removeEventListener('wheel', noscroll)
   }, [])
 
   /**
@@ -155,12 +160,12 @@ function Design ({ handleSignout }: Props): JSX.Element {
       <Header handleSignout={handleSignout} />
       <HStack spacing={0} w='100%' h='100vh' paddingTop='50px'>
         <Box display={{ base: 'none', '2xl': 'block' }} h='100%'>
-          <SideBar addFurniture={addFurniture} />
+          <Menu addFurniture={addFurniture} />
         </Box>
         <VStack width='100%' height='100%' spacing='10px'>
           <HStack w='100%' alignItems='start' paddingTop='10px' paddingLeft='20px' spacing='20px'>
             <Box display={{ base: 'block', '2xl': 'none' }}>
-              <SideBar addFurniture={addFurniture} />
+              <Menu addFurniture={addFurniture} />
             </Box>
             <SelectingFurniture furniture={ target === -1 ? null : furnitureList[target] } onClick={ () => { if (target !== -1) deleteFurniture() } } />
             <SaveField roomName={name} setName={setName} saveLayout={() => { saveLayout().catch(e => { console.error(e) }) }} />
@@ -168,7 +173,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
             <Guide />
           </HStack>
           <div style={{ width: '100%' }}>
-          <Wrap flexWrap='wrap' width='100%' paddingLeft='20px' spacing='20px' >
+          <Wrap flexWrap='wrap' width='100%' paddingX='auto' spacing='10px' justify='center' >
             <Center boxSize={`${viewportSize}px`} bg='#FAFAFA'>{draggableImgs}</Center>
             <Viewport3D furnitureList={furnitureList} boxSize={viewportSize} />
           </Wrap>
