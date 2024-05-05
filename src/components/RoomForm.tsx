@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormControl, FormLabel, Input, Flex } from '@chakra-ui/react'
+import { FormControl, FormLabel, Input, Flex, Text } from '@chakra-ui/react'
 
 interface Props {
   initialValue: string
@@ -19,6 +19,9 @@ function RoomForm ({ initialValue, setName }: Props): JSX.Element {
             value={initialValue}
             onChange={(e) => { setName(e.target.value) }}
           />
+          <Text fontSize='16px' paddingLeft='5px'>
+            {initialValue.length}文字
+          </Text>
         </Flex>
       </FormControl>
     </>
