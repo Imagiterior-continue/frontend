@@ -34,6 +34,26 @@ function Design ({ handleSignout }: Props): JSX.Element {
   const [draggableImgs, setDraggableImgs] = useState<JSX.Element[]>([])
   const [target, setTarget] = useState<number>(-1)
 
+  // 保存された家具情報を保持する配列
+  const [savedFurnitureList, setSavedFurnitureList] = useState<furnitureType[]>([])
+
+  /**
+   * 未保存の家具があるかどうか
+   * @returns bool: 1つでも違っていればtrue, 1つも違っていなければfalse
+   */
+  const checkUnsavedFurniture = (): boolean => {
+    console.log(`furnitureList: ${JSON.stringify(furnitureList)}`)
+    console.log(`savedFurnitur: ${JSON.stringify(savedFurnitureList)}`)
+    // 1つでも違っていればtrue, 1つも違っていなければfalse
+    if (furnitureList.length !== savedFurnitureList.length) {
+      return true // furnitureListとsavedFurnitureListの長さが違っている場合、明らかにtrue
+    }
+    // 各furnitureListの要素とsavedFurnitureListの要素を比較
+    return furnitureList.some((furniture, index) => {
+      return JSON.stringify(furniture) !== JSON.stringify(savedFurnitureList[index])
+    })
+  }
+
   /**
    * 部屋データを取得する
    */
@@ -44,6 +64,9 @@ function Design ({ handleSignout }: Props): JSX.Element {
       const data: roomType = docSnap.data() as roomType
       setName(data.roomName)
       setFurnitureList(data.furnitureList)
+      setSavedFurnitureList(data.furnitureList.map(item => {
+        return { ...item }
+      }))
     } catch (e) {
       console.error(e)
     }
@@ -77,6 +100,9 @@ function Design ({ handleSignout }: Props): JSX.Element {
       roomName: name,
       furnitureList
     }).then(() => {
+      setSavedFurnitureList(furnitureList.map(item => {
+        return { ...item }
+      }))
       toast(
         {
           duration: 4000,
@@ -157,7 +183,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
 
   return (
     <>
-      <Header handleSignout={handleSignout} />
+      <Header handleSignout={handleSignout} checkUnsavedFurniture={checkUnsavedFurniture} />
       <HStack spacing={0} w='100%' h='100vh' paddingTop='50px'>
         <Box display={{ base: 'none', '2xl': 'block' }} h='100%'>
           <Menu addFurniture={addFurniture} />
