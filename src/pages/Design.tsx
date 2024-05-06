@@ -10,7 +10,7 @@ import Guide from '../components/display/Guide'
 import DraggableImg from '../components/2D/DraggableImg'
 import type { furnitureType } from '../type/furnitureType'
 import Viewport3D from '../components/3D/Viewport3D'
-import { useToast } from '@chakra-ui/react'
+import { useToast, Modal, ModalOverlay, ModalContent, ModalFooter, ModalBody, Button, useDisclosure, Text, ModalCloseButton } from '@chakra-ui/react'
 import { db } from '../hooks/firebase'
 import { doc, updateDoc, getDoc } from 'firebase/firestore/lite'
 import { useParams } from 'react-router-dom'
@@ -31,6 +31,59 @@ function Design ({ handleSignout }: Props): JSX.Element {
   const [furnitureList, setFurnitureList] = useState<furnitureType[]>([])
   const [draggableImgs, setDraggableImgs] = useState<JSX.Element[]>([])
   const [target, setTarget] = useState<number>(-1)
+
+  // const [isOpen, setIsOpen] = useState<boolean>(false)
+  // const [onOpen, setOnOpen] = useState<() => void>(() => {})
+  // const [onClose, setOnClose] = useState<() => void>(() => {})
+
+  const ConfirmLeaveModal: React.FC = (): JSX.Element => {
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    return (
+      <>
+        <Button onClick={onOpen}>Open Modal</Button>
+
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent maxWidth='600px'>
+          <ModalCloseButton />
+          <ModalBody display="flex" flexDirection="column" alignItems="left" justifyContent="center" padding='20px'>
+              <Text fontSize="lg" marginTop="15px">このページを離れると、まだ保存していない変更が失われます。</Text>
+              <Text fontSize="lg">続行してもよろしいですか？</Text>
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme='gray' mr={3} onClick={onClose}>
+                いいえ
+              </Button>
+              <Button colorScheme='red'>
+                はい
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
+    )
+  }
+
+  // useEffect(() => {
+  //   const handleBeforeUnload = (event: BeforeUnloadEvent): string => {
+  //     if (checkUnsavedFurniture()) {
+  //       const message = '未保存の家具があります。ページを離れますか？'
+  //       event.returnValue = message // 標準の警告メッセージを設定
+  //       return message // 一部のブラウザではこの値が表示される
+  //     } else {
+  //       const message = '未保存なし'
+  //       event.returnValue = message // 標準の警告メッセージを設定
+  //       return message // 一部のブラウザではこの値が表示される
+  //     }
+  //   }
+
+  //   window.addEventListener('beforeunload', handleBeforeUnload)
+  //   console.log(savedFurnitureList)
+
+  //   return () => {
+  //     window.removeEventListener('beforeunload', handleBeforeUnload)
+  //   }
+  // }, []) // 依存配列が空なので、コンポーネントのマウント時にのみ設定されます
 
   /**
    * 部屋データを取得する
@@ -155,6 +208,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
       <SideBar addFurniture={addFurniture} />
       <VStack marginLeft='15%' marginTop='20px' width='85%' height='100%'>
         <HStack width='97%' height='50px'>
+          <ConfirmLeaveModal />
           <BackButton/>
           <Spacer/>
           <IconButton type='delete' event={ () => { if (target !== -1) deleteFurniture() } }/>
