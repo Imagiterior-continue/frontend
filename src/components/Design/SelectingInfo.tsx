@@ -25,21 +25,21 @@ function Content ({ furniture, onClick }: Props): JSX.Element {
     <VStack w='280px' h='150px'>
       <Text w='100%' paddingLeft='10px' fontSize='16px' borderLeft={`7px solid ${themeColor.accent}`}>選択中の家具</Text>
       <HStack bg={themeColor.main} rounded='3px' paddingX='15px' w='280px' h='130px' position='relative'>
-        {furniture === null
+        { furniture === null
           ? <Text w='100%' textAlign='center' fontSize='20px'>未選択</Text>
           : (
-            <>
-              <VStack spacing='10px' w='150px' position='absolute'>
-                <Text textAlign='center' fontSize='18px'>{furniture.name}</Text>
-                <Button h='30px' bg='rgba(0, 0, 0, 0)' _hover={{ bg: 'rgba(0, 0, 0, 0.08)' }} border='2px solid #FF2929' rounded='3px' color='#FF2929' onClick={onOpen}>
-                  <FaRegTrashAlt size='20px' style={{ marginRight: '7px' }} />
-                  削除
-                </Button>
-                <ModalOpen name={furniture.name} isOpen={isOpen} onClick={onClick} onClose={onClose} />
-              </VStack>
-              <Spacer />
-              <Image boxSize='100px' src={`/image_3D/${furniture.fileName}_3D.png`} />
-            </>
+              <>
+                <VStack spacing='10px' w='150px' position='absolute'>
+                  <Text textAlign='center' fontSize='18px'>{furniture.name}</Text>
+                  <Button h='30px' bg='rgba(0, 0, 0, 0)' _hover={{ bg: 'rgba(0, 0, 0, 0.08)' }} border='2px solid #FF2929' rounded='3px' color='#FF2929' onClick={onOpen}>
+                    <FaRegTrashAlt size='20px' style={{ marginRight: '7px' }} />
+                    削除
+                  </Button>
+                  <ModalOpen name={furniture.name} isOpen={isOpen} onClick={onClick} onClose={onClose} />
+                </VStack>
+                <Spacer />
+                <Image boxSize='100px' src={`/image_3D/${furniture.fileName}_3D.png`} />
+              </>
             )
         }
       </HStack>
@@ -81,17 +81,17 @@ function SelectingFurniture ({ furniture, onClick }: Props): JSX.Element {
   return (
     <>
       <Box display={{ base: 'none', '2xl': 'block' }}>
-        <Content furniture={furniture} onClick={onClick} />
+        <Content furniture={furniture} onClick={onClick}/>
       </Box>
       <Popover>
         <PopoverTrigger>
-          <Button display={{ base: 'block', '2xl': 'none' }} bg={themeColor.main} _hover={{ bg: themeColor.main }} boxSize='40px' padding='5px' rounded='3px' boxShadow='xl'>
-            <FaRegTrashAlt size='30px' color={themeColor.mainString} />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent display={{ base: 'block', '2xl': 'none' }} rounded='3px' padding='10px' boxShadow='xl'>
-          <Content furniture={furniture} onClick={onClick} />
-        </PopoverContent>
+            <Button display={{ base: 'block', '2xl': 'none' }} bg={themeColor.main} _hover={{ bg: themeColor.main }} boxSize='40px' padding='5px' rounded='3px' boxShadow='xl'>
+              <FaRegTrashAlt size='30px' color={themeColor.mainString} />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent display={{ base: 'block', '2xl': 'none' }} rounded='3px' padding='10px' boxShadow='xl'>
+            <Content furniture={furniture} onClick={onClick} />
+          </PopoverContent>
       </Popover>
     </>
   )
