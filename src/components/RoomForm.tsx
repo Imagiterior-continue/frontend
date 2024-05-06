@@ -20,7 +20,6 @@ function RoomForm ({ initialValue, setName }: Props): JSX.Element {
             type='text'
             placeholder='ここに入力'
             value={initialValue}
-            // onChange={handleInputChange}
             onChange={(e) => { setName(e.target.value) }}
             maxLength={maxLength}
           />
