@@ -10,11 +10,12 @@ import Guide from '../components/display/Guide'
 import DraggableImg from '../components/2D/DraggableImg'
 import type { furnitureType } from '../type/furnitureType'
 import Viewport3D from '../components/3D/Viewport3D'
-import { useToast, Modal, ModalOverlay, ModalContent, ModalFooter, ModalBody, Button, useDisclosure, Text, ModalCloseButton } from '@chakra-ui/react'
+import { useToast, useDisclosure } from '@chakra-ui/react'
 import { db } from '../hooks/firebase'
 import { doc, updateDoc, getDoc } from 'firebase/firestore/lite'
 import { useParams } from 'react-router-dom'
 import type { roomType } from '../type/roomType'
+import ConfirmLeaveModal from '../components/modal/ConfirmLeaveModal'
 
 interface Props {
   handleSignout: () => void
@@ -32,58 +33,33 @@ function Design ({ handleSignout }: Props): JSX.Element {
   const [draggableImgs, setDraggableImgs] = useState<JSX.Element[]>([])
   const [target, setTarget] = useState<number>(-1)
 
-  // const [isOpen, setIsOpen] = useState<boolean>(false)
-  // const [onOpen, setOnOpen] = useState<() => void>(() => {})
-  // const [onClose, setOnClose] = useState<() => void>(() => {})
+  // 保存された家具情報を保持する配列
+  const [savedFurnitureList, setSavedFurnitureList] = useState<furnitureType[]>([])
 
-  const ConfirmLeaveModal: React.FC = (): JSX.Element => {
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    return (
-      <>
-        <Button onClick={onOpen}>Open Modal</Button>
+  // 遷移先のURL
+  const [path, setPath] = useState<string>('/')
 
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent maxWidth='600px'>
-          <ModalCloseButton />
-          <ModalBody display="flex" flexDirection="column" alignItems="left" justifyContent="center" padding='20px'>
-              <Text fontSize="lg" marginTop="15px">このページを離れると、まだ保存していない変更が失われます。</Text>
-              <Text fontSize="lg">続行してもよろしいですか？</Text>
-            </ModalBody>
-            <ModalFooter>
-              <Button colorScheme='gray' mr={3} onClick={onClose}>
-                いいえ
-              </Button>
-              <Button colorScheme='red'>
-                はい
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </>
-    )
+  // モーダルの管理を行う変数
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  /**
+   * 未保存の家具があるかどうか
+   * @returns bool: 1つでも違っていればtrue, 1つも違っていなければfalse
+   */
+  const checkUnsavedFurniture = (): boolean => {
+    console.log(`furnitureList: ${JSON.stringify(furnitureList)}`)
+    console.log(`savedFurnitur: ${JSON.stringify(savedFurnitureList)}`)
+    // 1つでも違っていればtrue, 1つも違っていなければfalse
+    if (furnitureList.length !== savedFurnitureList.length) {
+      return true // furnitureListとsavedFurnitureListの長さが違っている場合、明らかにtrue
+    }
+    // 各furnitureListの要素とsavedFurnitureListの要素を比較
+    return furnitureList.some((furniture, index) => {
+      return JSON.stringify(furniture) !== JSON.stringify(savedFurnitureList[index])
+    })
   }
 
-  // useEffect(() => {
-  //   const handleBeforeUnload = (event: BeforeUnloadEvent): string => {
-  //     if (checkUnsavedFurniture()) {
-  //       const message = '未保存の家具があります。ページを離れますか？'
-  //       event.returnValue = message // 標準の警告メッセージを設定
-  //       return message // 一部のブラウザではこの値が表示される
-  //     } else {
-  //       const message = '未保存なし'
-  //       event.returnValue = message // 標準の警告メッセージを設定
-  //       return message // 一部のブラウザではこの値が表示される
-  //     }
-  //   }
-
-  //   window.addEventListener('beforeunload', handleBeforeUnload)
-  //   console.log(savedFurnitureList)
-
-  //   return () => {
-  //     window.removeEventListener('beforeunload', handleBeforeUnload)
-  //   }
-  // }, []) // 依存配列が空なので、コンポーネントのマウント時にのみ設定されます
+  console.log(checkUnsavedFurniture())
 
   /**
    * 部屋データを取得する
@@ -95,6 +71,9 @@ function Design ({ handleSignout }: Props): JSX.Element {
       const data: roomType = docSnap.data() as roomType
       setName(data.roomName)
       setFurnitureList(data.furnitureList)
+      setSavedFurnitureList(data.furnitureList.map(item => {
+        return { ...item }
+      }))
     } catch (e) {
       console.error(e)
     }
@@ -120,6 +99,9 @@ function Design ({ handleSignout }: Props): JSX.Element {
       roomName: name,
       furnitureList
     }).then(() => {
+      setSavedFurnitureList(furnitureList.map(item => {
+        return { ...item }
+      }))
       toast(
         {
           colorScheme: 'green',
@@ -208,8 +190,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
       <SideBar addFurniture={addFurniture} />
       <VStack marginLeft='15%' marginTop='20px' width='85%' height='100%'>
         <HStack width='97%' height='50px'>
-          <ConfirmLeaveModal />
-          <BackButton/>
+          <BackButton checkUnsavedFurniture={checkUnsavedFurniture} onOpen={onOpen} setPath={setPath}/>
           <Spacer/>
           <IconButton type='delete' event={ () => { if (target !== -1) deleteFurniture() } }/>
           <IconButton type='save' roomName = {name} event={() => { saveLayout().catch(e => { console.error(e) }) }}/>
@@ -237,6 +218,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
           <Guide />
         </HStack>
       </VStack>
+      <ConfirmLeaveModal isOpen={isOpen} onClose={onClose} path={path} />
     </>
   )
 }
