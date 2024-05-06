@@ -59,8 +59,6 @@ function Design ({ handleSignout }: Props): JSX.Element {
     })
   }
 
-  console.log(checkUnsavedFurniture())
-
   /**
    * 部屋データを取得する
    */
