@@ -36,7 +36,7 @@ function SaveField ({ roomName, setName, saveLayout }: Props): JSX.Element {
       <Popover>
         <PopoverTrigger>
           <Button display={{ base: 'block', '2xl': 'none' }} bg={themeColor.main} _hover={{ bg: themeColor.main }} boxSize='40px' padding='5px' rounded='3px' boxShadow='xl'>
-            <MdSaveAlt size='30px' color={themeColor.accentString}/>
+            <MdSaveAlt size='30px' color={themeColor.mainString}/>
           </Button>
         </PopoverTrigger>
         <PopoverContent display={{ base: 'block', '2xl': 'none' }} padding='10px' rounded='3px' boxShadow='xl'>

@@ -3,7 +3,7 @@ import { themeColor } from '../Data/color'
 
 export const theme = extendTheme({
   fonts: {
-    body: 'Noto Sans JP, sans-serif, Playfair Display, serif'
+    body: 'Noto Sans JP, sans-serif, Shippori Antique, sans-serif'
   },
   styles: {
     global: {

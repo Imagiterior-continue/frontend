@@ -19,7 +19,7 @@ function Header ({ handleSignout }: Props): JSX.Element {
         <Box display={{ base: 'none', sm: 'block' }}>
           <Logo size={35} color='white'/>
         </Box>
-        <Text fontFamily='Playfair Display, serif' marginLeft='10px' fontSize={{ base: '25px', sm: '25px' }} color='white'>Imagiterior</Text>
+        <Text fontFamily='Shippori Antique' marginLeft='3px' fontSize={{ base: '25px', sm: '25px' }} color={themeColor.accentString}>Imagiterior</Text>
         <Spacer />
         <UserInfo/>
         <IconLink link='/list' icon={<TiThSmall color={themeColor.accentString} size='22px'/>} text='部屋一覧'/>

@@ -5,13 +5,17 @@ interface colorType {
   baseString?: string
   accentString?: string
   accentHover?: string
+  mainString?: string
+  baseHover?: string
 }
 
 export const themeColor: colorType = {
-  base: '#E9E5DC',
-  main: '#98BEC7',
-  accent: '#282457',
+  base: '#F1E9D2',
+  main: '#D9CCA8',
+  accent: '#065D71',
   baseString: 'black',
   accentString: 'white',
-  accentHover: '#0E0A3A'
+  accentHover: '#055061',
+  mainString: 'white',
+  baseHover: '#EBE4CE'
 }
