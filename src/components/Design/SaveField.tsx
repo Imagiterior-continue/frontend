@@ -13,12 +13,12 @@ interface Props {
 
 function Content ({ roomName, setName, saveLayout, onClose }: Props): JSX.Element {
   return (
-    <VStack w='280px' h='150px'>
+    <VStack w='280px' h='160px'>
       <Text w='100%' paddingLeft='10px' fontSize='16px' borderLeft={`7px solid ${themeColor.accent}`}>部屋を保存</Text>
       <VStack w='280px' h='130px' bg={themeColor.main} rounded='3px' paddingX='5px'>
         <RoomForm initialValue={roomName} setName={setName} />
         <Box onClick={onClose}>
-          <Button h='30px' w='70px' bg='#2B6B7A' _hover={{ bg: '#1F5461' }} marginTop='5px' rounded='3px' color={themeColor.accentString} isDisabled={roomName === ''} onClick={saveLayout}>
+          <Button h='30px' w='70px' bg='#2B6B7A' _hover={{ bg: '#1F5461' }} marginBottom='5px' rounded='3px' color={themeColor.accentString} isDisabled={roomName === ''} onClick={saveLayout}>
             保存
           </Button>
         </Box>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormControl, FormLabel, Input } from '@chakra-ui/react'
+import { FormControl, FormLabel, Input, Text } from '@chakra-ui/react'
 
 interface Props {
   initialValue: string
@@ -7,6 +7,7 @@ interface Props {
 }
 
 function RoomForm ({ initialValue, setName }: Props): JSX.Element {
+  const maxLength = 10
   return (
     <>
       <FormControl>
@@ -19,7 +20,11 @@ function RoomForm ({ initialValue, setName }: Props): JSX.Element {
           placeholder='ここに入力'
           value={initialValue}
           onChange={(e) => { setName(e.target.value) }}
+          maxLength={10}
         />
+        <Text align='right' fontSize='12px'>
+          {initialValue.length} / {maxLength}
+        </Text>
       </FormControl>
     </>
   )
