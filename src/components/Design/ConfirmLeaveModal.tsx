@@ -4,14 +4,13 @@ import { Modal, ModalOverlay, ModalContent, ModalFooter, ModalBody, Button, Text
 interface ConfirmLeaveModalProps {
   isOpen: boolean
   onClose: () => void
-  path: string
 }
 
-const ConfirmLeaveModal: React.FC<ConfirmLeaveModalProps> = ({ isOpen, onClose, path }) => {
+const ConfirmLeaveModal: React.FC<ConfirmLeaveModalProps> = ({ isOpen, onClose }) => {
   // 「はい」を押した際に実行
   const onConfirm = (): void => {
     onClose() // モーダルを閉じる
-    window.location.href = path // pathで指定されたページに遷移
+    window.location.href = '/list' // pathで指定されたページに遷移
   }
   return (
     <>
