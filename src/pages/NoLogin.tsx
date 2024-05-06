@@ -1,6 +1,6 @@
 import React from 'react'
 import { VStack, Text } from '@chakra-ui/layout'
-import ToLoginButton from '../components/button/ToLoginButton'
+import ToLoginButton from '../components/common/ToLoginButton'
 
 function NoLogin (): JSX.Element {
   return (

@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { VStack, HStack, Spacer, Center, Box } from '@chakra-ui/layout'
-import SideBar from '../components/SideBar'
-import BackButton from '../components/button/BackButton'
-import LogoutButton from '../components/button/LogoutButton'
-import RoomForm from '../components/RoomForm'
-import IconButton from '../components/button/IconButton'
-import UserInfo from '../components/display/UserInfo'
-import Guide from '../components/display/Guide'
+import { VStack, HStack, Center, Wrap, Box } from '@chakra-ui/layout'
+import Menu from '../components/Design/Menu'
+import Guide from '../components/Design/Guide'
 import DraggableImg from '../components/2D/DraggableImg'
 import type { furnitureType } from '../type/furnitureType'
 import Viewport3D from '../components/3D/Viewport3D'
-import { useToast } from '@chakra-ui/react'
+import { useToast, useBreakpointValue, Spacer } from '@chakra-ui/react'
 import { db } from '../hooks/firebase'
 import { doc, updateDoc, getDoc } from 'firebase/firestore/lite'
 import { useParams } from 'react-router-dom'
 import type { roomType } from '../type/roomType'
+import Header from '../components/common/Header'
+import SelectingFurniture from '../components/Design/SelectingInfo'
+import SaveField from '../components/Design/SaveField'
+import SuccessToast from '../components/Design/SuccessToast'
+import ErrorToast from '../components/Design/ErrorToast'
 
 interface Props {
   handleSignout: () => void
@@ -23,6 +23,8 @@ interface Props {
 function Design ({ handleSignout }: Props): JSX.Element {
   const urlParams = useParams<string>()
   const toast = useToast()
+  const breakpoint = useBreakpointValue({ base: 'base', sm: 'sm', md: 'md', lg: 'lg', xl: 'xl' })
+  const viewportSize: number = breakpoint === 'base' ? 350 : breakpoint === 'sm' ? 450 : 550
 
   /* 部屋名 */
   const [name, setName] = useState<string>('')
@@ -31,6 +33,24 @@ function Design ({ handleSignout }: Props): JSX.Element {
   const [furnitureList, setFurnitureList] = useState<furnitureType[]>([])
   const [draggableImgs, setDraggableImgs] = useState<JSX.Element[]>([])
   const [target, setTarget] = useState<number>(-1)
+
+  // 保存された家具情報を保持する配列
+  const [savedFurnitureList, setSavedFurnitureList] = useState<furnitureType[]>([])
+
+  /**
+   * 未保存の家具があるかどうか
+   * @returns bool: 1つでも違っていればtrue, 1つも違っていなければfalse
+   */
+  const checkUnsavedFurniture = (): boolean => {
+    // 1つでも違っていればtrue, 1つも違っていなければfalse
+    if (furnitureList.length !== savedFurnitureList.length) {
+      return true // furnitureListとsavedFurnitureListの長さが違っている場合、明らかにtrue
+    }
+    // 各furnitureListの要素とsavedFurnitureListの要素を比較
+    return furnitureList.some((furniture, index) => {
+      return JSON.stringify(furniture) !== JSON.stringify(savedFurnitureList[index])
+    })
+  }
 
   /**
    * 部屋データを取得する
@@ -42,19 +62,30 @@ function Design ({ handleSignout }: Props): JSX.Element {
       const data: roomType = docSnap.data() as roomType
       setName(data.roomName)
       setFurnitureList(data.furnitureList)
+      setSavedFurnitureList(data.furnitureList.map(item => {
+        return { ...item }
+      }))
     } catch (e) {
       console.error(e)
     }
   }
+
+  // function noscroll (e: Event): void {
+  //   e.preventDefault()
+  // }
 
   // 未ログインのときはログイン画面に遷移
   useEffect(() => {
     if (localStorage.getItem('uid') === null) {
       window.location.href = '/nologin'
     }
+    if (urlParams.room_id !== 'room_id_1' && urlParams.room_id !== 'room_id_2' && urlParams.room_id !== 'room_id_3') {
+      window.location.href = '/nomatch'
+    }
     fetchRoomData().catch((error) => {
       console.error(error)
     })
+    // window.removeEventListener('wheel', noscroll)
   }, [])
 
   /**
@@ -67,26 +98,23 @@ function Design ({ handleSignout }: Props): JSX.Element {
       roomName: name,
       furnitureList
     }).then(() => {
+      setSavedFurnitureList(furnitureList.map(item => {
+        return { ...item }
+      }))
       toast(
         {
-          colorScheme: 'green',
-          title: '保存しました',
-          status: 'success',
-          duration: 6000,
-          isClosable: true,
-          position: 'top'
+          duration: 4000,
+          position: 'top',
+          render: () => (<SuccessToast />)
         }
       )
     }).catch((error) => {
       console.error('エラーが発生しました: ', error)
       toast(
         {
-          colorScheme: 'red',
-          title: '保存に失敗しました',
-          status: 'error',
-          duration: 6000,
-          isClosable: true,
-          position: 'top'
+          duration: 4000,
+          position: 'top',
+          render: () => (<ErrorToast />)
         }
       )
     })
@@ -97,10 +125,11 @@ function Design ({ handleSignout }: Props): JSX.Element {
    * @param newFileName 追加する家具の名前
    * @param newImageSize 追加する家具の画像サイズ
    */
-  const addFurniture: (newFileName: string, newImageSize: number[]) => void = (newFileName: string, newImageSize: number[]) => {
+  const addFurniture: (newFileName: string, newName: string, newImageSize: number[]) => void = (newFileName, newName, newImageSize) => {
     setFurnitureList((prev) => {
       const newFurniture: furnitureType = {
         fileName: newFileName,
+        name: newName,
         position: [0, -0.5, 0],
         rotation: 0,
         size: [1, 1, 1],
@@ -144,7 +173,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
   useEffect(() => {
     const newDraggableImgs: JSX.Element[] = furnitureList.map((item, index) => {
       return (
-        <DraggableImg key={index} index={index} fileName={item.fileName} imageSize={item.imageSize} position={item.position} rotation={item.rotation} updateFurnitureList={updateFurnitureList} isEdited={index === target} />
+        <DraggableImg key={index} index={index} fileName={item.fileName} imageSize={item.imageSize} position={item.position} rotation={item.rotation} updateFurnitureList={updateFurnitureList} isEdited={index === target} viewportSize={viewportSize} />
       )
     })
     setDraggableImgs(newDraggableImgs)
@@ -152,37 +181,31 @@ function Design ({ handleSignout }: Props): JSX.Element {
 
   return (
     <>
-      <SideBar addFurniture={addFurniture} />
-      <VStack marginLeft='15%' marginTop='20px' width='85%' height='100%'>
-        <HStack width='97%' height='50px'>
-          <BackButton/>
-          <Spacer/>
-          <IconButton type='delete' event={ () => { if (target !== -1) deleteFurniture() } }/>
-          <IconButton type='save' roomName = {name} event={() => { saveLayout().catch(e => { console.error(e) }) }}/>
-          <Box width='20px'/>
-          <UserInfo/>
-          <Box width='20px' />
-          <LogoutButton handleSignout={handleSignout}/>
-        </HStack>
-        <HStack width='97%' marginTop='20px'>
-          <Spacer />
-          <VStack>
-            <Center paddingLeft='40px' width='700px' height='50px'>
-              <RoomForm initialValue={name} setName={setName} />
-            </Center>
-            <Center width='700px' height='700px' bg='#ECECEC'>{draggableImgs}</Center>
-          </VStack>
-          <Spacer />
-          <VStack>
-            <HStack width='700px' height='50px' />
-            <Viewport3D furnitureList={furnitureList} />
-          </VStack>
-          <Spacer />
-        </HStack>
-        <HStack width='97%'>
-          <Guide />
-        </HStack>
-      </VStack>
+      <Header handleSignout={handleSignout} checkUnsavedFurniture={checkUnsavedFurniture} />
+      <HStack spacing={0} w='100%' h='100vh' paddingTop='50px'>
+        <Box display={{ base: 'none', '2xl': 'block' }} h='100%'>
+          <Menu addFurniture={addFurniture} />
+        </Box>
+        <VStack width='100%' height='100%' spacing='10px'>
+          <HStack w='100%' alignItems='start' paddingTop='10px' paddingLeft='20px' spacing='20px'>
+            <Box display={{ base: 'block', '2xl': 'none' }}>
+              <Menu addFurniture={addFurniture} />
+            </Box>
+            <SelectingFurniture furniture={ target === -1 ? null : furnitureList[target] } onClick={ () => { if (target !== -1) deleteFurniture() } } />
+            <SaveField roomName={name} setName={setName} saveLayout={() => { saveLayout().catch(e => { console.error(e) }) }} />
+            <Spacer />
+            <Guide />
+          </HStack>
+          <div style={{ width: '100%' }}>
+          <Wrap flexWrap='wrap' width='100%' paddingX='auto' spacing='10px' justify='center' >
+            <Center boxSize={`${viewportSize}px`} bg='#FAFAFA'>{draggableImgs}</Center>
+            <Viewport3D furnitureList={furnitureList} boxSize={viewportSize} />
+          </Wrap>
+          </div>
+          <HStack width='97%'>
+          </HStack>
+        </VStack>
+      </HStack>
     </>
   )
 }
