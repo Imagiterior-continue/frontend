@@ -1,5 +1,4 @@
 import React from 'react'
-import './App.css'
 import { Route, Routes } from 'react-router-dom'
 import { ChakraProvider } from '@chakra-ui/react'
 import Login from './pages/Login'
@@ -11,6 +10,7 @@ import Sample from './pages/Sample'
 import { getAdditionalUserInfo, signInWithPopup, signOut } from 'firebase/auth'
 import { auth, googleProvider, db } from './hooks/firebase'
 import { doc, setDoc } from 'firebase/firestore/lite'
+import { theme } from './style/theme'
 
 function App (): JSX.Element {
   // ログイン
@@ -61,8 +61,8 @@ function App (): JSX.Element {
   }
 
   return (
-    <div className='App'>
-      <ChakraProvider>
+    <div className='App' style={{ width: '100%', height: '100%' }}>
+      <ChakraProvider theme={theme}>
         <Routes>
           <Route path='/' element={<Login handleSignIn={handleSignIn}/>} />
           <Route path='/list' element={<List handleSignout={handleSignOut}/>} />
