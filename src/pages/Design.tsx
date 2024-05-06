@@ -42,8 +42,6 @@ function Design ({ handleSignout }: Props): JSX.Element {
    * @returns bool: 1つでも違っていればtrue, 1つも違っていなければfalse
    */
   const checkUnsavedFurniture = (): boolean => {
-    console.log(`furnitureList: ${JSON.stringify(furnitureList)}`)
-    console.log(`savedFurnitur: ${JSON.stringify(savedFurnitureList)}`)
     // 1つでも違っていればtrue, 1つも違っていなければfalse
     if (furnitureList.length !== savedFurnitureList.length) {
       return true // furnitureListとsavedFurnitureListの長さが違っている場合、明らかにtrue
