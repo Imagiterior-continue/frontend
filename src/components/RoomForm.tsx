@@ -7,6 +7,9 @@ interface Props {
 }
 
 function RoomForm ({ initialValue, setName }: Props): JSX.Element {
+  // 最大文字数
+  const maxLength = 10
+
   return (
     <>
       <FormControl>
@@ -17,10 +20,12 @@ function RoomForm ({ initialValue, setName }: Props): JSX.Element {
             type='text'
             placeholder='ここに入力'
             value={initialValue}
+            // onChange={handleInputChange}
             onChange={(e) => { setName(e.target.value) }}
+            maxLength={maxLength}
           />
           <Text fontSize='16px' paddingLeft='5px'>
-            {initialValue.length}文字
+            {initialValue.length} / {maxLength}
           </Text>
         </Flex>
       </FormControl>
