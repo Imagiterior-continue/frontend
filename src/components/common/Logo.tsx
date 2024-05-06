@@ -3,15 +3,16 @@ import React from 'react'
 
 interface Props {
   size: number
+  color: 'white' | 'black'
 }
 
-function Logo ({ size }: Props): JSX.Element {
+function Logo ({ size, color }: Props): JSX.Element {
   return (
     <>
       <Image
         boxSize={`${size}px`}
         objectFit='cover'
-        src='/icon.png'
+        src={color === 'white' ? '/icon/icon_white.svg' : '/icon/icon_black.svg'}
       />
     </>
   )

@@ -10,7 +10,7 @@ interface Props {
 function RoomImg ({ furnitureList }: Props): JSX.Element {
   return (
     <>
-      <Center width='200px' height='200px' bg='#ECECEC'>
+      <Center width='200px' height='200px' bg='#FFFFFF' roundedBottom='3px'>
         {furnitureList.map((furniture, index) => (
           <FurnitureImg
             key={index}

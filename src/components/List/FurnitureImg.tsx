@@ -18,6 +18,7 @@ function FurnitureImg ({ fileName, imageSize, position, rotation }: Props): JSX.
         transform={`translate(${position[0] * 100 / 1.8}px, ${position[2] * 100 / 1.8}px) rotate(${rotation}deg)`}
         objectFit='cover'
         src={`/image_2D/${fileName}_2D.png`}
+        userSelect='none'
       />
     </>
   )

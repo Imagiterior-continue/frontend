@@ -12,7 +12,8 @@ const initPosition = {
   height: 100,
   x: 0,
   y: 0,
-  rotation: 0
+  rotation: 0,
+  viewportSize: 700
 }
 
 export function useInteractJS (position: Partial<typeof initPosition>): any {
@@ -23,20 +24,20 @@ export function useInteractJS (position: Partial<typeof initPosition>): any {
   })
 
   const interactRef = useRef<HTMLElement | null>(null)
-  let { x, y, width, height, rotation } = _position
+  let { x, y, width, height, rotation, viewportSize } = _position
 
   const collisionDetection: () => void = () => {
-    if (x < -(350 - width / 2)) {
-      x = -(350 - width / 2)
+    if (x < -(viewportSize / 2 - width / 2)) {
+      x = -(viewportSize / 2 - width / 2)
     }
-    if (x > 350 - width / 2) {
-      x = 350 - width / 2
+    if (x > viewportSize / 2 - width / 2) {
+      x = viewportSize / 2 - width / 2
     }
-    if (y < -(350 - height / 2)) {
-      y = -(350 - height / 2)
+    if (y < -(viewportSize / 2 - height / 2)) {
+      y = -(viewportSize / 2 - height / 2)
     }
-    if (y > 350 - height / 2) {
-      y = 350 - height / 2
+    if (y > viewportSize / 2 - height / 2) {
+      y = viewportSize / 2 - height / 2
     }
   }
 
@@ -50,13 +51,13 @@ export function useInteractJS (position: Partial<typeof initPosition>): any {
         x += event.dx
         y += event.dy
         collisionDetection()
-        // ドラッグ後の座標をstateに保存する
         setPosition({
           width,
           height,
           x,
           y,
-          rotation
+          rotation,
+          viewportSize
         })
       })
       .on('tap', event => {
@@ -73,7 +74,8 @@ export function useInteractJS (position: Partial<typeof initPosition>): any {
           height,
           x,
           y,
-          rotation
+          rotation,
+          viewportSize
         })
       })
   }
@@ -93,7 +95,7 @@ export function useInteractJS (position: Partial<typeof initPosition>): any {
     ref: interactRef,
     // 返り値にCSSのスタイルを追加する。このスタイルを動かしたいコンポーネントに適用することで、コンポーネントが実際に動くようになる
     style: {
-      transform: `translate(${_position.x}px, ${_position.y}px) rotate(${rotation}deg)`,
+      transform: `translate(${_position.x}px, ${_position.y}px) rotate(${rotation}deg) scale(${_position.viewportSize / 700})`,
       position: 'absolute' as CSSProperties['position']
     },
     x: _position.x,
