@@ -86,11 +86,11 @@ function SelectingFurniture ({ furniture, onClick }: Props): JSX.Element {
       <Popover>
         <PopoverTrigger>
             <Button display={{ base: 'block', '2xl': 'none' }} bg={themeColor.main} _hover={{ bg: themeColor.main }} boxSize='40px' padding='5px' rounded='3px' boxShadow='xl'>
-              <FaRegTrashAlt size='30px' color={themeColor.mainString} />
+              <FaRegTrashAlt size='30px' color={themeColor.mainString}/>
             </Button>
           </PopoverTrigger>
           <PopoverContent display={{ base: 'block', '2xl': 'none' }} rounded='3px' padding='10px' boxShadow='xl'>
-            <Content furniture={furniture} onClick={onClick} />
+            <Content furniture={furniture} onClick={onClick}/>
           </PopoverContent>
       </Popover>
     </>
