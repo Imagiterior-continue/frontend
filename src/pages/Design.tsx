@@ -72,10 +72,6 @@ function Design ({ handleSignout }: Props): JSX.Element {
     }
   }
 
-  // function noscroll (e: Event): void {
-  //   e.preventDefault()
-  // }
-
   // 未ログインのときはログイン画面に遷移
   useEffect(() => {
     if (localStorage.getItem('uid') === null) {
@@ -87,7 +83,6 @@ function Design ({ handleSignout }: Props): JSX.Element {
     fetchRoomData().catch((error) => {
       console.error(error)
     })
-    // window.removeEventListener('wheel', noscroll)
   }, [])
 
   /**

@@ -13,7 +13,6 @@ interface Props {
 }
 
 function List ({ handleSignout }: Props): JSX.Element {
-  // 取得した部屋の情報
   const [roomList, setRoomList] = useState<roomType[]>([])
 
   /**
@@ -44,7 +43,6 @@ function List ({ handleSignout }: Props): JSX.Element {
     })
   }, [])
 
-  // TODO: APIで取得したユーザー情報の形式を確認した後、見直したい
   const AllRooms: JSX.Element[] = roomList.map(({ roomName, furnitureList }: roomType, index: number) => {
     return (
       <WrapItem key={index}>
