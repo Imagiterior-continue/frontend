@@ -24,18 +24,20 @@ function App (): JSX.Element {
       localStorage.setItem('displayName', result.user.displayName ?? '')
       localStorage.setItem('photoURL', result.user.photoURL ?? '')
 
-      if (additionalUserInfo !== null && additionalUserInfo.isNewUser) {
-        // 新規ユーザーの場合、初期レイアウト情報を保存
-        for (let i = 0; i < roomNum; i++) {
-          await setDoc(doc(db, result.user.uid, `room_id_${i + 1}`), {
-            furnitureList: [],
-            roomName: `部屋${i + 1}`
-          })
+      if (additionalUserInfo !== null) {
+        if (additionalUserInfo.isNewUser) {
+          // 新規ユーザーの場合、初期レイアウト情報を保存
+          for (let i = 0; i < roomNum; i++) {
+            await setDoc(doc(db, result.user.uid, `room_id_${i + 1}`), {
+              furnitureList: [],
+              roomName: `部屋${i + 1}`
+            })
+          }
         }
 
         window.location.href = '/list'
       } else {
-        console.error('error:additionalUserInfo.isNewUser')
+        console.error('additionalUserInfo.isNewUserのnullエラー')
       }
     } catch (error) {
       console.error('ログインエラー', error)
@@ -49,6 +51,7 @@ function App (): JSX.Element {
       localStorage.removeItem('displayName')
       localStorage.removeItem('uid')
       localStorage.removeItem('photoURL')
+      window.location.href = '/'
     } catch (error) {
       console.error('ログアウトエラー:', error)
     }

@@ -93,7 +93,6 @@ export function useInteractJS (position: Partial<typeof initPosition>): any {
 
   return {
     ref: interactRef,
-    // 返り値にCSSのスタイルを追加する。このスタイルを動かしたいコンポーネントに適用することで、コンポーネントが実際に動くようになる
     style: {
       transform: `translate(${_position.x}px, ${_position.y}px) rotate(${rotation}deg) scale(${_position.viewportSize / 700})`,
       position: 'absolute' as CSSProperties['position']
