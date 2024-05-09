@@ -2,11 +2,11 @@ interface colorType {
   base: string
   main: string
   accent: string
-  baseString?: string
-  accentString?: string
-  accentHover?: string
-  mainString?: string
-  baseHover?: string
+  baseString: string
+  accentString: string
+  accentHover: string
+  mainString: string
+  baseHover: string
 }
 
 export const themeColor: colorType = {
