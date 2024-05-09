@@ -37,7 +37,7 @@ function App (): JSX.Element {
 
         window.location.href = '/list'
       } else {
-        console.error('additionalUserInfo.isNewUserのnullエラー')
+        console.error('error:additionalUserInfo.isNewUser')
       }
     } catch (error) {
       console.error('ログインエラー', error)
