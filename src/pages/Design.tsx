@@ -95,7 +95,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
       }))
       toast(
         {
-          duration: 4000,
+          duration: 2000,
           position: 'top',
           render: () => (<SuccessToast />)
         }
@@ -104,7 +104,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
       console.error('エラーが発生しました: ', error)
       toast(
         {
-          duration: 4000,
+          duration: 2000,
           position: 'top',
           render: () => (<ErrorToast />)
         }
