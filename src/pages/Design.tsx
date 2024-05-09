@@ -26,7 +26,6 @@ function Design ({ handleSignout }: Props): JSX.Element {
   const breakpoint = useBreakpointValue({ base: 'base', sm: 'sm', md: 'md', lg: 'lg', xl: 'xl' })
   const viewportSize: number = breakpoint === 'base' ? 350 : breakpoint === 'sm' ? 450 : 550
 
-  /* 部屋名 */
   const [roomName, setRoomName] = useState<string>('')
 
   // 配置されている全ての家具の情報を保持する配列
@@ -42,7 +41,6 @@ function Design ({ handleSignout }: Props): JSX.Element {
    * @returns bool: 1つでも違っていればtrue, 1つも違っていなければfalse
    */
   const checkUnsavedFurniture = (): boolean => {
-    // 1つでも違っていればtrue, 1つも違っていなければfalse
     if (furnitureList.length !== savedFurnitureList.length) {
       return true
     }

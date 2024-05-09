@@ -15,7 +15,6 @@ function App (): JSX.Element {
   // ログイン
   const handleSignIn: any = async () => {
     try {
-      // Googleログインポップアップを表示
       const result = await signInWithPopup(auth, googleProvider)
       const roomNum = 3
       const additionalUserInfo = getAdditionalUserInfo(result)
