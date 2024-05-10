@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
 import { useLoader } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
 
 interface Props {
   url: string
@@ -9,7 +10,12 @@ interface Props {
 }
 
 function LoadModels ({ url, position, rotation, ...props }: Props): JSX.Element {
-  const { scene } = useLoader(GLTFLoader, `/models/${url}`)
+  const dracoLoader = new DRACOLoader()
+  dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/') // DRACOのデコーダーのパスを設定
+
+  const { scene } = useLoader(GLTFLoader, `/models/${url}`, loader => {
+    loader.setDRACOLoader(dracoLoader)
+  })
   const copiedScene = useMemo(() => scene.clone(), [scene])
 
   return (
