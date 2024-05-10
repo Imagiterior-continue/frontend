@@ -2,9 +2,9 @@ import React, { Suspense } from 'react'
 import { OrbitControls, PerspectiveCamera, ContactShadows, useProgress, Html } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import LoadModels from './LoadModels'
-import type { furnitureType } from '../../type/furnitureType'
+import type { furnitureType } from '../../../type/furnitureType'
 import { Box, VStack, Text } from '@chakra-ui/react'
-import { themeColor } from '../../Data/color'
+import { themeColor } from '../../../Data/color'
 
 interface Props {
   furnitureList: furnitureType[]

@@ -7,7 +7,7 @@ import Design from './pages/Design'
 import NoMatch from './pages/NoMatch'
 import NoLogin from './pages/NoLogin'
 import { getAdditionalUserInfo, signInWithPopup, signOut } from 'firebase/auth'
-import { auth, googleProvider, db } from './hooks/firebase'
+import { auth, googleProvider, db } from './utils/firebase'
 import { doc, setDoc } from 'firebase/firestore/lite'
 import { theme } from './style/theme'
 
