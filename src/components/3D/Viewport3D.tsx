@@ -33,7 +33,7 @@ function Viewport3D ({ furnitureList, boxSize }: Props): JSX.Element {
     <Box boxSize={`${boxSize}px`}>
       <Canvas>
         <Suspense fallback={<Loading />}>
-        { /* eslint-disable-next-line */ }
+          { /* eslint-disable-next-line */ }
           <ambientLight intensity={1.1} />
           { /* eslint-disable-next-line */ }
           <directionalLight position={[0, 5, 0]} intensity={1} />
