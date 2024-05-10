@@ -6,7 +6,6 @@ import List from './pages/List'
 import Design from './pages/Design'
 import NoMatch from './pages/NoMatch'
 import NoLogin from './pages/NoLogin'
-import Sample from './pages/Sample'
 import { getAdditionalUserInfo, signInWithPopup, signOut } from 'firebase/auth'
 import { auth, googleProvider, db } from './hooks/firebase'
 import { doc, setDoc } from 'firebase/firestore/lite'
@@ -16,17 +15,15 @@ function App (): JSX.Element {
   // ログイン
   const handleSignIn: any = async () => {
     try {
-      // Googleログインポップアップを表示
       const result = await signInWithPopup(auth, googleProvider)
       const roomNum = 3
       const additionalUserInfo = getAdditionalUserInfo(result)
 
-      // ログイン成功時の処理
       localStorage.setItem('uid', result.user.uid)
       localStorage.setItem('displayName', result.user.displayName ?? '')
       localStorage.setItem('photoURL', result.user.photoURL ?? '')
 
-      if (additionalUserInfo !== null) { //  nullチェック
+      if (additionalUserInfo !== null) {
         if (additionalUserInfo.isNewUser) {
           // 新規ユーザーの場合、初期レイアウト情報を保存
           for (let i = 0; i < roomNum; i++) {
@@ -39,11 +36,9 @@ function App (): JSX.Element {
 
         window.location.href = '/list'
       } else {
-        // null時のエラーハンドリング
-        console.error('additionalUserInfo.isNewUserのnullエラー')
+        console.error('error:additionalUserInfo.isNewUser')
       }
     } catch (error) {
-      // エラーハンドリング
       console.error('ログインエラー', error)
     }
   }
@@ -55,6 +50,7 @@ function App (): JSX.Element {
       localStorage.removeItem('displayName')
       localStorage.removeItem('uid')
       localStorage.removeItem('photoURL')
+      window.location.href = '/'
     } catch (error) {
       console.error('ログアウトエラー:', error)
     }
@@ -69,7 +65,6 @@ function App (): JSX.Element {
           <Route path='/design/:room_id' element={<Design handleSignout={handleSignOut}/>} />
           <Route path='/nologin' element={<NoLogin/>}/>
           <Route path='*' element={<NoMatch/>} />
-          <Route path='/sample' element={<Sample/>} />
         </Routes>
       </ChakraProvider>
     </div>

@@ -26,8 +26,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
   const breakpoint = useBreakpointValue({ base: 'base', sm: 'sm', md: 'md', lg: 'lg', xl: 'xl' })
   const viewportSize: number = breakpoint === 'base' ? 350 : breakpoint === 'sm' ? 450 : 550
 
-  /* 部屋名 */
-  const [name, setName] = useState<string>('')
+  const [roomName, setRoomName] = useState<string>('')
 
   // 配置されている全ての家具の情報を保持する配列
   const [furnitureList, setFurnitureList] = useState<furnitureType[]>([])
@@ -42,13 +41,9 @@ function Design ({ handleSignout }: Props): JSX.Element {
    * @returns bool: 1つでも違っていればtrue, 1つも違っていなければfalse
    */
   const checkUnsavedFurniture = (): boolean => {
-    console.log(`furnitureList: ${JSON.stringify(furnitureList)}`)
-    console.log(`savedFurnitur: ${JSON.stringify(savedFurnitureList)}`)
-    // 1つでも違っていればtrue, 1つも違っていなければfalse
     if (furnitureList.length !== savedFurnitureList.length) {
-      return true // furnitureListとsavedFurnitureListの長さが違っている場合、明らかにtrue
+      return true
     }
-    // 各furnitureListの要素とsavedFurnitureListの要素を比較
     return furnitureList.some((furniture, index) => {
       return JSON.stringify(furniture) !== JSON.stringify(savedFurnitureList[index])
     })
@@ -62,7 +57,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
       const uid: string = localStorage.getItem('uid') ?? ''
       const docSnap = await getDoc(doc(db, uid, urlParams.room_id ?? ''))
       const data: roomType = docSnap.data() as roomType
-      setName(data.roomName)
+      setRoomName(data.roomName)
       setFurnitureList(data.furnitureList)
       setSavedFurnitureList(data.furnitureList.map(item => {
         return { ...item }
@@ -71,10 +66,6 @@ function Design ({ handleSignout }: Props): JSX.Element {
       console.error(e)
     }
   }
-
-  // function noscroll (e: Event): void {
-  //   e.preventDefault()
-  // }
 
   // 未ログインのときはログイン画面に遷移
   useEffect(() => {
@@ -87,7 +78,6 @@ function Design ({ handleSignout }: Props): JSX.Element {
     fetchRoomData().catch((error) => {
       console.error(error)
     })
-    // window.removeEventListener('wheel', noscroll)
   }, [])
 
   /**
@@ -97,7 +87,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
     const uid: string = localStorage.getItem('uid') ?? ''
     const updateRef = doc(db, uid, urlParams.room_id ?? '')
     await updateDoc(updateRef, {
-      roomName: name,
+      roomName,
       furnitureList
     }).then(() => {
       setSavedFurnitureList(furnitureList.map(item => {
@@ -105,7 +95,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
       }))
       toast(
         {
-          duration: 4000,
+          duration: 2000,
           position: 'top',
           render: () => (<SuccessToast />)
         }
@@ -114,7 +104,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
       console.error('エラーが発生しました: ', error)
       toast(
         {
-          duration: 4000,
+          duration: 2000,
           position: 'top',
           render: () => (<ErrorToast />)
         }
@@ -194,7 +184,7 @@ function Design ({ handleSignout }: Props): JSX.Element {
               <Menu addFurniture={addFurniture} />
             </Box>
             <SelectingFurniture furniture={ target === -1 ? null : furnitureList[target] } onClick={ () => { if (target !== -1) deleteFurniture() } } />
-            <SaveField roomName={name} setName={setName} saveLayout={() => { saveLayout().catch(e => { console.error(e) }) }} />
+            <SaveField roomName={roomName} setRoomName={setRoomName} saveLayout={() => { saveLayout().catch(e => { console.error(e) }) }} />
             <Spacer />
             <Guide />
           </HStack>

@@ -22,7 +22,7 @@ function Content ({ furniture, onClick }: Props): JSX.Element {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
-    <VStack w='280px' h='150px'>
+    <VStack w='280px' h='160px'>
       <Text w='100%' paddingLeft='10px' fontSize='16px' borderLeft={`7px solid ${themeColor.accent}`}>選択中の家具</Text>
       <HStack bg={themeColor.main} rounded='3px' paddingX='15px' w='280px' h='130px' position='relative'>
         { furniture === null

@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Text, HStack, Box } from '@chakra-ui/layout'
-import { Spacer, WrapItem, useDisclosure } from '@chakra-ui/react'
+import { Spacer, useDisclosure } from '@chakra-ui/react'
 import { themeColor } from '../../Data/color'
 import { TiThSmall } from 'react-icons/ti'
 import Logo from './Logo'
@@ -15,8 +15,29 @@ interface Props {
 }
 
 function Header ({ handleSignout, checkUnsavedFurniture }: Props): JSX.Element {
-  // モーダルの管理を行う変数
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [func, setFunc] = useState<() => void>(() => {})
+
+  /**
+   * レイアウトの保存状態に応じてモーダルを表示する
+   * @param type 'list' or 'logout'
+   */
+  const onClick: (type: 'list' | 'logout') => void = (type) => {
+    if (checkUnsavedFurniture === undefined || !checkUnsavedFurniture()) {
+      if (type === 'list') {
+        window.location.href = '/list'
+      } else {
+        handleSignout()
+      }
+    } else {
+      if (type === 'list') {
+        setFunc(() => () => { window.location.href = '/list' })
+      } else {
+        setFunc(() => handleSignout)
+      }
+      onOpen()
+    }
+  }
 
   return (
     <>
@@ -27,12 +48,10 @@ function Header ({ handleSignout, checkUnsavedFurniture }: Props): JSX.Element {
         <Text fontFamily='Shippori Antique' marginLeft='3px' fontSize={{ base: '25px', sm: '25px' }} color={themeColor.accentString}>Imagiterior</Text>
         <Spacer />
         <UserInfo/>
-        <IconLink onClick={checkUnsavedFurniture === undefined || !checkUnsavedFurniture() ? () => { window.location.href = '/list' } : onOpen} icon={<TiThSmall color={themeColor.accentString} size='22px'/>} text='部屋一覧' />
-        <WrapItem onClick={handleSignout}>
-          <IconLink onClick={() => { window.location.href = '/' }} icon={<FiLogOut color={themeColor.accentString} size='25px'/>} text='ログアウト'/>
-        </WrapItem>
+        <IconLink onClick={() => { onClick('list') }} icon={<TiThSmall color={themeColor.accentString} size='22px'/>} text='部屋一覧' />
+        <IconLink onClick={() => { onClick('logout') }} icon={<FiLogOut color={themeColor.accentString} size='25px'/>} text='ログアウト'/>
       </HStack>
-      <ConfirmLeaveModal isOpen={isOpen} onClose={onClose} />
+      <ConfirmLeaveModal isOpen={isOpen} onClose={onClose} onClick={func} />
     </>
   )
 }
