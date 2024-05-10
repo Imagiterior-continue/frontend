@@ -15,10 +15,8 @@ interface Props {
 function DraggableImg (props: Props): JSX.Element {
   const interact = useInteractJS({ width: props.imageSize[props.rotation % 180 === 0 ? 0 : 1] * props.viewportSize / 700, height: props.imageSize[props.rotation % 180 === 0 ? 1 : 0] * props.viewportSize / 700, x: props.position[0] * props.viewportSize / 3.6, y: props.position[2] * props.viewportSize / 3.6, rotation: props.rotation, viewportSize: props.viewportSize })
 
-  // インデックス
   const [index, setIndex] = useState<number>(0)
 
-  // クリックされているかどうか
   const [isClicking, setIsClicking] = useState(false)
   const handleMouseDown: () => void = () => {
     setIsClicking(true)
@@ -37,7 +35,6 @@ function DraggableImg (props: Props): JSX.Element {
       props.updateFurnitureList(index, [interact.x * 3.6 / props.viewportSize as number, -0.5, interact.y * 3.6 /props.viewportSize as number], interact.rotation as number)
     }
   }, [interact.x, interact.y, interact.rotation])
-  // console.log(`x:${interact.x}, y:${interact.y}, rotate:${interact.rotate}, index:${index}`)
 
   return (
     <>

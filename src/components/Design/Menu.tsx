@@ -31,7 +31,7 @@ function Menu ({ addFurniture }: Props): JSX.Element {
       </Button>
       <Drawer isOpen={isOpen} onClose={onClose} placement='left'>
         <DrawerOverlay />
-        <DrawerContent display={{ base: 'block', '2xl': 'none' }} w='250px' padding='10px' rounded='3px' boxShadow='xl'>
+        <DrawerContent display={{ base: 'block', '2xl': 'none' }} w='250px' padding='10px'>
           <Accordion width='100%' allowToggle overflowY='scroll' sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
             {AccordionItems}
           </Accordion>

@@ -26,30 +26,19 @@ function FurnitureMenu ({ title, items, addFurniture }: Props): JSX.Element {
   return (
     <>
       <AccordionItem width='100%' borderRadius='3px' marginBottom='3px'>
-        {/* <AccordionButton bg={`linear-gradient(90deg, white 0 80%, ${themeColor.base} 80% 100%)`} h='40px' _hover={{ bg: `linear-gradient(90deg, #EEEEEE 0 80%, ${themeColor.baseHover} 80% 100%)` }}>
-          <Box as="span" flex='1' textAlign='left' fontSize='18px' color='#555555'>
-            {title}
-          </Box>
-          <AccordionIcon />
-        </AccordionButton>
-        <AccordionPanel padding={0}>
-          <VStack w='100%' marginTop='3px' spacing='3px'>
-            {AllFurnitures}
-          </VStack>
-        </AccordionPanel> */}
         {({ isExpanded }) => (
           <>
             <AccordionButton bg={`linear-gradient(90deg, white 0 80%, ${isExpanded ? themeColor.accent : themeColor.base} 80% 100%)`} h='40px' _hover={{ bg: `linear-gradient(90deg, #EEEEEE 0 80%, ${isExpanded ? themeColor.accentHover : themeColor.baseHover} 80% 100%)` }}>
-          <Box as="span" flex='1' textAlign='left' fontSize='18px' color='#555555'>
-            {title}
-          </Box>
-          <AccordionIcon />
-        </AccordionButton>
-        <AccordionPanel padding={0}>
-          <VStack w='100%' marginTop='3px' spacing='3px'>
-            {AllFurnitures}
-          </VStack>
-        </AccordionPanel>
+              <Box as="span" flex='1' textAlign='left' fontSize='18px' color='#555555'>
+                {title}
+              </Box>
+              <AccordionIcon />
+            </AccordionButton>
+            <AccordionPanel padding={0}>
+              <VStack w='100%' marginTop='3px' spacing='3px'>
+                {AllFurnitures}
+              </VStack>
+            </AccordionPanel>
           </>
         )}
       </AccordionItem>
